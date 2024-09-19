@@ -1,0 +1,115 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "correlationId": {
+      "description": "A unique `UUID` to allow the request/response to be tracked",
+      "type": "string",
+      "length": 36
+    },
+    "address": {
+      "type": "object",
+      "properties": {
+        "line1": {
+          "type": "string"
+        },
+        "line2": {
+          "type": "string"
+        },
+        "line3": {
+          "type": "string"
+        },
+        "line4": {
+          "type": "string"
+        },
+        "line5": {
+          "type": "string"
+        },
+        "postcode": {
+          "type": "string"
+        },
+        "uprn": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        }
+      },
+      "required": ["line1", "postcode", "country"]
+    },
+    "insights": {
+      "type": "object",
+      "properties": {
+        "risk": {
+          "type": "object",
+          "properties": {
+            "riskScore": {
+              "description": "Risk score",
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "reason": {
+              "description": "Reason for risk score",
+              "type": "string",
+              "minimum": 0,
+              "maximum": 256
+            }
+          },
+          "required": [
+            "riskScore",
+            "reason"
+          ]
+        },
+        "relationships": {
+          "type": "object",
+          "properties": {
+            "occurrences": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "event_type": {
+                    "type": "string"
+                  },
+                  "involvement_group": {
+                    "type": "string"
+                  },
+                  "involvement_index": {
+                    "type": "string"
+                  },
+                  "request_id": {
+                    "type": "string"
+                  },
+                  "session_id": {
+                    "type": "string"
+                  },
+                  "user_id": {
+                    "type": "string"
+                  },
+                  "event_time": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "event_type",
+                  "involvement_group",
+                  "involvement_index",
+                  "request_id",
+                  "session_id",
+                  "user_id",
+                  "event_time"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "correlationId",
+    "riskScore",
+    "reason"
+  ]
+}

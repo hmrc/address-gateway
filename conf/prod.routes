@@ -1,4 +1,5 @@
 # Add all the application routes to the app.routes file
-->         /                          app.Routes
-->         /                          health.Routes
-->         /                          definition.Routes
+->        /                       app.Routes
+->        /address-gateway        app.Routes
+->        /                       health.Routes
+->        /                       definition.Routes

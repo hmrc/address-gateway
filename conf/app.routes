@@ -1,3 +1,7 @@
 # microservice specific routes
 
-GET        /hello-world             uk.gov.hmrc.addressgateway.controllers.MicroserviceHelloWorldController.hello
+POST        /risk               uk.gov.hmrc.addressgateway.controllers.AddressInsightsController.any()
+
+POST        /insights           uk.gov.hmrc.addressgateway.controllers.AddressInsightsController.any()
+
+POST        /cache              uk.gov.hmrc.addressgateway.controllers.AddressInsightsController.any()
