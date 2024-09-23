@@ -35,7 +35,7 @@
           "type": "string"
         }
       },
-      "required": ["line1", "postcode", "country"]
+      "required": ["line1", "country"]
     },
     "insights": {
       "type": "object",
