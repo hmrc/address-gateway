@@ -1,7 +1,7 @@
 
 # address-gateway
 
-This is a placeholder README.md for a new repository
+`address-gateway` provides api-platform access to `address-insights*` services.
 
 ### License
 
