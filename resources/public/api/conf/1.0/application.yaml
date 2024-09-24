@@ -8,11 +8,13 @@ info:
   description: >
     # Overview
 
-    ### Address Insights
+    ### Address
 
-    This API enables your application to get an opinion of the riskiness of an address.
+    This API enables your application to validate and/or get an opinion of the riskiness of an address.
+    
+    For lookup, the response will provide 0 or more matching addresses.
 
-    Given an address, the response will provide:
+    For insights, given an address, the response will provide:
 
     * Risk score from 0 (no risk) to 100 (high risk)
     * Reason providing an indication of why the risk score has been allocated
@@ -23,6 +25,69 @@ servers:
   - url: https://api.service.hmrc.gov.uk/misc/address
     description: Production
 paths:
+  /lookup:
+    post:
+      summary: Lookup address
+      description: >
+        Lookup of postal and BFPO (British Forces Post Office) address details within the UK
+      operationId: AddressVerificationLookup
+      security:
+        - applicationRestricted: [ ]
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: 'docs/lookup-request.json'
+            example:
+              postcode: "AA1 1ZZ"
+              filter: "The Rectory"
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: { }
+          content:
+            application/json:
+              schema:
+                $ref: 'docs/uk-address-response.json'
+              example:
+                id: GB200000706253
+                uprn: 200000706253
+                parentUprn: 200000706251
+                usrn: 300000706253
+                organisation: Some Company
+                address:
+                  lines:
+                  - Test House
+                  - The Tests
+                  town: Test Town
+                  postcode: BB00 0BB
+                  subdivision:
+                    code: GB-ENG
+                    name: England
+                  country:
+                    code: GB
+                    name: United Kingdom
+                localCustodian:
+                  code: 1760
+                  name: Test Valley
+                location:
+                - 50.9986451
+                - -1.4690977
+                language: en
+                administrativeArea: TEST COUNTY                ]
+        3XX:
+          description: |
+            The request has been redirected. Clients should follow the redirect using the location header as per the HTTP specification.
+        400:
+          description: |
+            The request was invalid, e.g the postcode is not well formed.
+        5XX:
+          description: |
+            An unexpected server error occurred when processing the request. These are usually temporary and consumers should try again.
+      deprecated: false
   /store:
     post:
       summary: Address risk
