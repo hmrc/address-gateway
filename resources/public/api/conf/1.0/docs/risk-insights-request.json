@@ -5,7 +5,8 @@
   "title": "Root",
   "type": "object",
   "required": [
-    "address"
+    "address",
+    "lookbackDays"
   ],
   "properties": {
     "address": {
@@ -48,6 +49,12 @@
         "postcode",
         "country"
       ]
+    },
+    "lookbackDays": {
+      "type": "integer",
+      "$id": "#root/lookbackDays",
+      "title": "lookbackDays",
+      "description": "The number of days to look back for the insights"
     }
   }
 }

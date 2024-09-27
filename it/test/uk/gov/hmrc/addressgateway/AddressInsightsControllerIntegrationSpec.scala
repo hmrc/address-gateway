@@ -53,8 +53,8 @@ class AddressInsightsControllerIntegrationSpec
     "respond with OK status" when {
       "valid json payload is provided" in {
         externalWireMockServer.stubFor(
-          post(urlEqualTo(s"/insights"))
-            .withRequestBody(equalToJson("""{"address":{"line1":"1 High Street", "country":"United Kingdom"}}"""))
+          post(urlEqualTo(s"/address-insights/insights"))
+            .withRequestBody(equalToJson("""{"address":{"line1":"1 High Street", "country":"United Kingdom"}, "lookbackDays":120}"""))
             .withHeader(HeaderNames.CONTENT_TYPE, equalTo(MimeTypes.JSON))
             .willReturn(
               aResponse()
@@ -66,9 +66,9 @@ class AddressInsightsControllerIntegrationSpec
         )
         val response =
           wsClient
-            .url(s"$baseUrl/insights")
+            .url(s"$baseUrl/address-gateway/insights")
             .withHttpHeaders(HeaderNames.CONTENT_TYPE -> MimeTypes.JSON)
-            .post("""{"address":{"line1":"1 High Street", "country":"United Kingdom"}}""")
+            .post("""{"address":{"line1":"1 High Street", "country":"United Kingdom"}, "lookbackDays":120}""")
             .futureValue
 
         response.status shouldBe OK
@@ -81,7 +81,7 @@ class AddressInsightsControllerIntegrationSpec
     "respond with BAD_REQUEST status" when {
       "invalid json payload is provided" in {
         externalWireMockServer.stubFor(
-          post(urlEqualTo(s"/insights"))
+          post(urlEqualTo(s"/address-insights/insights"))
             .withRequestBody(equalToJson("""{"address":{"line1":"1 High Street", "country":"United Kingdom"}}"""))
             .withHeader(HeaderNames.CONTENT_TYPE, equalTo(MediaTypes.`application/json`.value))
             .willReturn(
@@ -94,7 +94,7 @@ class AddressInsightsControllerIntegrationSpec
         )
         val response =
           wsClient
-            .url(s"$baseUrl/insights")
+            .url(s"$baseUrl/address-gateway/insights")
             .withHttpHeaders(HeaderNames.CONTENT_TYPE -> MimeTypes.JSON)
             .post("""{"address":{"line1":"1 High Street", "country":"United Kingdom"}""")
             .futureValue
