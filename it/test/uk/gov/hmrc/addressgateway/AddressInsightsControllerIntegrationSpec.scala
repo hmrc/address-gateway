@@ -51,7 +51,7 @@ class AddressInsightsControllerIntegrationSpec
 
   "AddressInsightsController" should {
     "respond with OK status" when {
-      "valid json payload is provided" in {
+      "/insights called with valid json payload" in {
         externalWireMockServer.stubFor(
           post(urlEqualTo(s"/address-insights/insights"))
             .withRequestBody(equalToJson("""{"address":{"line1":"1 High Street", "country":"United Kingdom"}, "lookbackDays":120}"""))
@@ -74,6 +74,98 @@ class AddressInsightsControllerIntegrationSpec
         response.status shouldBe OK
         response.json shouldBe Json.parse(
           """{"correlationId":"220967234589763549876", "address":{}, "insights":  {"risk":{ "riskScore": 0, "reason": "ADDRESS_NOT_ON_WATCHLIST"}, "insights": {"occurrences": []}}}"""
+        )
+      }
+    }
+
+    "respond with OK status" when {
+      "/lookup called with valid json payload" in {
+        externalWireMockServer.stubFor(
+          post(urlEqualTo(s"/address-lookup/lookup"))
+            .withRequestBody(equalToJson("""{"postcode":"BB00 0BB"}"""))
+            .withHeader(HeaderNames.CONTENT_TYPE, equalTo(MimeTypes.JSON))
+            .willReturn(
+              aResponse()
+                .withBody(
+                  """{
+                    |  "id": "GB200000706253",
+                    |  "uprn": 200000706253,
+                    |  "parentUprn": 200000706251,
+                    |  "usrn": 300000706253,
+                    |  "organisation": "Some Company",
+                    |  "address": {
+                    |    "lines": [
+                    |      "Test House",
+                    |      "The Tests"
+                    |    ],
+                    |    "town": "Test Town",
+                    |    "postcode": "BB00 0BB",
+                    |    "subdivision": {
+                    |      "code": "GB-ENG",
+                    |      "name": "England"
+                    |    },
+                    |    "country": {
+                    |      "code": "GB",
+                    |      "name": "United Kingdom"
+                    |    }
+                    |  },
+                    |  "localCustodian": {
+                    |    "code": 1760,
+                    |    "name": "Test Valley"
+                    |  },
+                    |  "location": [
+                    |    50.9986451,
+                    |    -1.4690977
+                    |  ],
+                    |  "language": "en",
+                    |  "administrativeArea": "TEST COUNTY                ]"
+                    |}""".stripMargin
+                )
+                .withStatus(OK)
+            )
+        )
+        val response =
+          wsClient
+            .url(s"$baseUrl/address-gateway/lookup")
+            .withHttpHeaders(HeaderNames.CONTENT_TYPE -> MimeTypes.JSON)
+            .post("""{"postcode":"BB00 0BB"}""")
+            .futureValue
+
+        response.status shouldBe OK
+        response.json shouldBe Json.parse(
+          """{
+            |  "id": "GB200000706253",
+            |  "uprn": 200000706253,
+            |  "parentUprn": 200000706251,
+            |  "usrn": 300000706253,
+            |  "organisation": "Some Company",
+            |  "address": {
+            |    "lines": [
+            |      "Test House",
+            |      "The Tests"
+            |    ],
+            |    "town": "Test Town",
+            |    "postcode": "BB00 0BB",
+            |    "subdivision": {
+            |      "code": "GB-ENG",
+            |      "name": "England"
+            |    },
+            |    "country": {
+            |      "code": "GB",
+            |      "name": "United Kingdom"
+            |    }
+            |  },
+            |  "localCustodian": {
+            |    "code": 1760,
+            |    "name": "Test Valley"
+            |  },
+            |  "location": [
+            |    50.9986451,
+            |    -1.4690977
+            |  ],
+            |  "language": "en",
+            |  "administrativeArea": "TEST COUNTY                ]"
+            |}""".stripMargin
         )
       }
     }

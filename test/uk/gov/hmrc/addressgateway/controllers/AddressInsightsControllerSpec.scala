@@ -41,6 +41,66 @@ class AddressInsightsControllerSpec extends AnyWordSpec with Matchers with Guice
   private val controller = app.injector.instanceOf[AddressInsightsController]
   implicit val mat: Materializer = app.injector.instanceOf[Materializer]
 
+  "POST /lookup" should {
+    implicit val hc: HeaderCarrier = HeaderCarrier()
+
+    "forward a 200 response from the downstream lookup service" in {
+      val response = """[{
+                       |  "id": "GB200000706253",
+                       |  "uprn": 200000706253,
+                       |  "parentUprn": 200000706251,
+                       |  "usrn": 300000706253,
+                       |  "organisation": "Some Company",
+                       |  "address": {
+                       |    "lines": [
+                       |      "Test House",
+                       |      "The Tests"
+                       |    ],
+                       |    "town": "Test Town",
+                       |    "postcode": "BB00 0BB",
+                       |    "subdivision": {
+                       |      "code": "GB-ENG",
+                       |      "name": "England"
+                       |    },
+                       |    "country": {
+                       |      "code": "GB",
+                       |      "name": "United Kingdom"
+                       |    }
+                       |  },
+                       |  "localCustodian": {
+                       |    "code": 1760,
+                       |    "name": "Test Valley"
+                       |  },
+                       |  "location": [
+                       |    50.9986451,
+                       |    -1.4690977
+                       |  ],
+                       |  "language": "en",
+                       |  "administrativeArea": "TEST COUNTY                ]"
+                       |}]""".stripMargin
+
+      Server.withRouterFromComponents(ServerConfig(port = Some(insightsPort))) { components =>
+        import components.{defaultActionBuilder => Action}
+        { case r @ SPOST(p"/lookup") =>
+          Action(Ok(response).withHeaders(HeaderNames.CONTENT_TYPE -> MimeTypes.JSON))
+        }
+      } { _ =>
+        val requestAddressJson = Json
+          .parse("""{
+                   | "postcode":"BB00 0BB"
+                   |}""".stripMargin)
+          .as[JsObject]
+        val fakeRequest = FakeRequest("POST", "/lookup")
+          .withJsonBody(requestAddressJson)
+          .withHeaders("True-Calling-Client" -> "example-service", HeaderNames.CONTENT_TYPE -> MimeTypes.JSON)
+
+        val result = controller.insights()(fakeRequest)
+        status(result) shouldBe Status.OK
+        contentAsString(result) shouldBe response
+      }
+    }
+  }
+
   "POST /insights" should {
     implicit val hc: HeaderCarrier = HeaderCarrier()
 
@@ -80,7 +140,7 @@ class AddressInsightsControllerSpec extends AnyWordSpec with Matchers with Guice
           .withJsonBody(requestAddressJson)
           .withHeaders("True-Calling-Client" -> "example-service", HeaderNames.CONTENT_TYPE -> MimeTypes.JSON)
 
-        val result = controller.any()(fakeRequest)
+        val result = controller.insights()(fakeRequest)
         status(result) shouldBe Status.OK
         contentAsString(result) shouldBe response
       }
@@ -103,7 +163,7 @@ class AddressInsightsControllerSpec extends AnyWordSpec with Matchers with Guice
           .withJsonBody(Json.parse("""{"no-address": {}}"""))
           .withHeaders("True-Calling-Client" -> "example-service", HeaderNames.CONTENT_TYPE -> MimeTypes.JSON)
 
-        val result = controller.any()(fakeRequest)
+        val result = controller.insights()(fakeRequest)
         status(result) shouldBe Status.BAD_REQUEST
         contentAsString(result) shouldBe errorResponse
       }
@@ -122,7 +182,7 @@ class AddressInsightsControllerSpec extends AnyWordSpec with Matchers with Guice
           .withTextBody("""{""")
           .withHeaders("True-Calling-Client" -> "example-service", HeaderNames.CONTENT_TYPE -> MimeTypes.JSON)
 
-        val result = controller.any()(fakeRequest)
+        val result = controller.insights()(fakeRequest)
         status(result) shouldBe Status.BAD_REQUEST
         contentAsString(result) shouldBe errorResponse
       }
@@ -135,7 +195,7 @@ class AddressInsightsControllerSpec extends AnyWordSpec with Matchers with Guice
         .withJsonBody(Json.parse("""{"address": "AB123456C"}"""))
         .withHeaders("True-Calling-Client" -> "example-service", HeaderNames.CONTENT_TYPE -> MimeTypes.JSON)
 
-      val result = controller.any()(fakeRequest)
+      val result = controller.insights()(fakeRequest)
       status(result) shouldBe Status.BAD_GATEWAY
       contentAsString(result) shouldBe errorResponse
     }

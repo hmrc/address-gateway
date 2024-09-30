@@ -1,7 +1,11 @@
 # microservice specific routes
 
-POST        /risk               uk.gov.hmrc.addressgateway.controllers.AddressInsightsController.any()
+#AddressLookup endpooint
+POST        /lookup          uk.gov.hmrc.addressgateway.controllers.AddressInsightsController.lookup()
 
-POST        /insights           uk.gov.hmrc.addressgateway.controllers.AddressInsightsController.any()
+#AddressInsightsProxy endpoints
+POST        /risk            uk.gov.hmrc.addressgateway.controllers.AddressInsightsController.insights()
 
-POST        /cache              uk.gov.hmrc.addressgateway.controllers.AddressInsightsController.any()
+POST        /insights        uk.gov.hmrc.addressgateway.controllers.AddressInsightsController.insights()
+
+POST        /cache           uk.gov.hmrc.addressgateway.controllers.AddressInsightsController.insights()
