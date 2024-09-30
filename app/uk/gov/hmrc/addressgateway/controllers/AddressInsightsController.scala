@@ -36,23 +36,41 @@ class AddressInsightsController @Inject() (cc: ControllerComponents, config: App
 
   private val logger = Logger(this.getClass.getSimpleName)
 
-  def any(): Action[AnyContent] = Action.async { implicit request =>
+  def lookup(): Action[AnyContent] = Action.async { implicit request =>
     toggledAuthorised(config.rejectInternalTraffic, AuthProviders(StandardApplication)) {
-      val path = request.target.uri.toString.replace("address-gateway", "address-insights")
+      val path = downstreamUri(request.target.uri.toString, "address-lookup")
+      val url = s"${config.insightsProxyBaseUrl}$path"
+
+      connector.forward(request, url, config.internalAuthToken)
+    }
+  }
+  def insights(): Action[AnyContent] = Action.async { implicit request =>
+    toggledAuthorised(config.rejectInternalTraffic, AuthProviders(StandardApplication)) {
+      val path = downstreamUri(request.target.uri.toString, "address-insights")
       val url = s"${config.insightsProxyBaseUrl}$path"
 
       connector.forward(request, url, config.internalAuthToken)
     }
   }
 
+  private def downstreamUri(uri: String, targetServiceContext: String): String =
+    uri.toString.replace(config.appName, targetServiceContext)
+
   def checkConnectivity(): Unit = {
-    val url = s"${config.insightsProxyBaseUrl}/insights"
-    connector.checkConnectivity(url, config.internalAuthToken).map { result =>
-      if (result) {
-        logger.info("Connectivity to address-insights-proxy established")
-      } else {
+    val insightsUrl = s"${config.insightsProxyBaseUrl}/insights"
+    val lookupUrl = s"${config.insightsProxyBaseUrl}/lookup"
+    val checkInsights = connector.checkConnectivity(insightsUrl, config.internalAuthToken)
+    val checkLookup = connector.checkConnectivity(lookupUrl, config.internalAuthToken)
+
+    checkInsights.flatMap(i => checkLookup.map(l => (i, l))).map {
+      case (true, true) =>
+        logger.info("Connectivity to address-insights-proxy and address-lookup established")
+      case (true, false) =>
         logger.error("ERROR: Could not connect to address-insights-proxy")
-      }
+      case (false, true) =>
+        logger.error("ERROR: Could not connect to address-lookup")
+      case (false, false) =>
+        logger.error("ERROR: Could not connect to address-insights-proxy or address-lookup")
     }
   }
 
