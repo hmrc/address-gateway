@@ -39,7 +39,7 @@ class AddressInsightsController @Inject() (cc: ControllerComponents, config: App
   def lookup(): Action[AnyContent] = Action.async { implicit request =>
     toggledAuthorised(config.rejectInternalTraffic, AuthProviders(StandardApplication)) {
       val path = downstreamUri(request.target.uri.toString, "address-lookup")
-      val url = s"${config.insightsProxyBaseUrl}$path"
+      val url = s"${config.lookupBaseUrl}$path"
 
       connector.forward(request, url, config.internalAuthToken)
     }
@@ -58,7 +58,7 @@ class AddressInsightsController @Inject() (cc: ControllerComponents, config: App
 
   def checkConnectivity(): Unit = {
     val insightsUrl = s"${config.insightsProxyBaseUrl}/insights"
-    val lookupUrl = s"${config.insightsProxyBaseUrl}/lookup"
+    val lookupUrl = s"${config.lookupBaseUrl}/lookup"
     val checkInsights = connector.checkConnectivity(insightsUrl, config.internalAuthToken)
     val checkLookup = connector.checkConnectivity(lookupUrl, config.internalAuthToken)
 

@@ -45,7 +45,8 @@ class AddressInsightsControllerIntegrationSpec
     GuiceApplicationBuilder()
       .configure(
         "metrics.enabled" -> false,
-        "microservice.services.address-insights-proxy.port" -> externalWireMockPort
+        "microservice.services.address-insights-proxy.port" -> externalWireMockPort,
+        "microservice.services.address-lookup.port" -> externalWireMockPort
       )
       .build()
 
