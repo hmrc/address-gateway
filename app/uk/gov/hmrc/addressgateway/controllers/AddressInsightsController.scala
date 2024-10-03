@@ -17,7 +17,7 @@
 package uk.gov.hmrc.addressgateway.controllers
 
 import play.api.Logger
-import play.api.libs.json.{JsObject, JsString}
+import play.api.libs.json.{JsNumber, JsObject, JsString}
 import play.api.mvc._
 import uk.gov.hmrc.addressgateway.ToggledAuthorisedFunctions
 import uk.gov.hmrc.addressgateway.config.AppConfig
@@ -63,7 +63,8 @@ class AddressInsightsController @Inject() (cc: ControllerComponents, config: App
     val checkInsights = connector.checkConnectivity(
       insightsUrl,
       config.internalAuthToken,
-      JsObject(Map("address" -> JsObject(Map("line1" -> JsString("line1"), "country" -> JsString("UK")))))
+      JsObject(Map("address" -> JsObject(Map("line1" -> JsString("line1"), "country" -> JsString("UK"))),
+      "lookbackDays" -> JsNumber(120)))
     )
     val checkLookup = connector.checkConnectivity(lookupUrl, config.internalAuthToken, JsObject(Map("postcode" -> JsString("EC1 2CD"))))
 
