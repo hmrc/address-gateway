@@ -57,18 +57,24 @@ class AddressInsightsController @Inject() (cc: ControllerComponents, config: App
     uri.toString.replace(config.appName, targetServiceContext)
 
   def checkConnectivity(): Unit = {
-    val insightsUrl = s"${config.insightsProxyBaseUrl}/insights"
-    val lookupUrl = s"${config.lookupBaseUrl}/lookup"
-    val checkInsights = connector.checkConnectivity(insightsUrl, config.internalAuthToken)
-    val checkLookup = connector.checkConnectivity(lookupUrl, config.internalAuthToken)
+    val insightsUrl = s"${config.insightsProxyBaseUrl}/address-insights/insights"
+    val lookupUrl = s"${config.lookupBaseUrl}/address-lookup/lookup"
+    val checkInsights = connector.checkConnectivity(
+      insightsUrl,
+      config.internalAuthToken
+    )
+    val checkLookup = connector.checkConnectivity(
+      lookupUrl,
+      config.internalAuthToken
+    )
 
     checkInsights.flatMap(i => checkLookup.map(l => (i, l))).map {
       case (true, true) =>
         logger.info("Connectivity to address-insights-proxy and address-lookup established")
       case (true, false) =>
-        logger.error("ERROR: Could not connect to address-insights-proxy")
-      case (false, true) =>
         logger.error("ERROR: Could not connect to address-lookup")
+      case (false, true) =>
+        logger.error("ERROR: Could not connect to address-insights-proxy")
       case (false, false) =>
         logger.error("ERROR: Could not connect to address-insights-proxy or address-lookup")
     }
