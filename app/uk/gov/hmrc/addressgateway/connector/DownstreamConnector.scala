@@ -84,7 +84,7 @@ class DownstreamConnector @Inject() (httpClient: HttpClientV2) extends Logging {
     try {
       httpClient
         .post(url"$url")
-        .withBody(JsObject.empty)
+        .withBody(body)
         .execute[HttpResponse]
         .map {
           case response if response.status > 400      => false
