@@ -79,8 +79,6 @@ class DownstreamConnector @Inject() (httpClient: HttpClientV2) extends Logging {
     import uk.gov.hmrc.http.HttpReads.Implicits.readRaw
     implicit val hc: HeaderCarrier = HeaderCarrier(authorization = Some(Authorization(authToken)))
 
-    logger.warn(s"checkConnectivity('$url')")
-
     try {
       httpClient
         .post(url"$url")
