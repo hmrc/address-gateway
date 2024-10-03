@@ -58,13 +58,12 @@ class AddressInsightsController @Inject() (cc: ControllerComponents, config: App
     uri.toString.replace(config.appName, targetServiceContext)
 
   def checkConnectivity(): Unit = {
-    val insightsUrl = s"${config.insightsProxyBaseUrl}/insights"
-    val lookupUrl = s"${config.lookupBaseUrl}/lookup"
+    val insightsUrl = s"${config.insightsProxyBaseUrl}/address-gateway/insights"
+    val lookupUrl = s"${config.lookupBaseUrl}/address-gateway/lookup"
     val checkInsights = connector.checkConnectivity(
       insightsUrl,
       config.internalAuthToken,
-      JsObject(Map("address" -> JsObject(Map("line1" -> JsString("line1"), "country" -> JsString("UK"))),
-      "lookbackDays" -> JsNumber(120)))
+      JsObject(Map("address" -> JsObject(Map("line1" -> JsString("line1"), "country" -> JsString("UK"))), "lookbackDays" -> JsNumber(120)))
     )
     val checkLookup = connector.checkConnectivity(lookupUrl, config.internalAuthToken, JsObject(Map("postcode" -> JsString("EC1 2CD"))))
 
