@@ -67,9 +67,9 @@ class AddressInsightsController @Inject() (cc: ControllerComponents, config: App
       case (true, true) =>
         logger.info("Connectivity to address-insights-proxy and address-lookup established")
       case (true, false) =>
-        logger.error("ERROR: Could not connect to address-insights-proxy")
-      case (false, true) =>
         logger.error("ERROR: Could not connect to address-lookup")
+      case (false, true) =>
+        logger.error("ERROR: Could not connect to address-insights-proxy")
       case (false, false) =>
         logger.error("ERROR: Could not connect to address-insights-proxy or address-lookup")
     }
