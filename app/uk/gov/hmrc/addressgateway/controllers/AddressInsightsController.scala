@@ -60,7 +60,11 @@ class AddressInsightsController @Inject() (cc: ControllerComponents, config: App
   def checkConnectivity(): Unit = {
     val insightsUrl = s"${config.insightsProxyBaseUrl}/insights"
     val lookupUrl = s"${config.lookupBaseUrl}/lookup"
-    val checkInsights = connector.checkConnectivity(insightsUrl, config.internalAuthToken)
+    val checkInsights = connector.checkConnectivity(
+      insightsUrl,
+      config.internalAuthToken,
+      JsObject(Map("address" -> JsObject(Map("line1" -> JsString("line1"), "country" -> JsString("UK")))))
+    )
     val checkLookup = connector.checkConnectivity(lookupUrl, config.internalAuthToken, JsObject(Map("postcode" -> JsString("EC1 2CD"))))
 
     checkInsights.flatMap(i => checkLookup.map(l => (i, l))).map {
