@@ -29,6 +29,7 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
 import uk.gov.hmrc.http.test.ExternalWireMockSupport
+import play.api.libs.ws.given
 
 class AddressInsightsControllerIntegrationSpec
     extends AnyWordSpec
@@ -36,7 +37,7 @@ class AddressInsightsControllerIntegrationSpec
     with ScalaFutures
     with IntegrationPatience
     with GuiceOneServerPerSuite
-    with ExternalWireMockSupport {
+    with ExternalWireMockSupport:
 
   private val wsClient = app.injector.instanceOf[WSClient]
   private val baseUrl = s"http://localhost:$port"
@@ -50,9 +51,9 @@ class AddressInsightsControllerIntegrationSpec
       )
       .build()
 
-  "AddressInsightsController" should {
-    "respond with OK status" when {
-      "/insights called with valid json payload" in {
+  "AddressInsightsController" should:
+    "respond with OK status" when:
+      "/insights called with valid json payload" in:
         externalWireMockServer.stubFor(
           post(urlEqualTo(s"/address-insights/insights"))
             .withRequestBody(equalToJson("""{"address":{"line1":"1 High Street", "country":"United Kingdom"}, "lookbackDays":120}"""))
@@ -76,11 +77,9 @@ class AddressInsightsControllerIntegrationSpec
         response.json shouldBe Json.parse(
           """{"correlationId":"220967234589763549876", "address":{}, "insights":  {"risk":{ "riskScore": 0, "reason": "ADDRESS_NOT_ON_WATCHLIST"}, "insights": {"occurrences": []}}}"""
         )
-      }
-    }
 
-    "respond with OK status" when {
-      "/lookup called with valid json payload" in {
+    "respond with OK status" when:
+      "/lookup called with valid json payload" in:
         externalWireMockServer.stubFor(
           post(urlEqualTo(s"/address-lookup/lookup"))
             .withRequestBody(equalToJson("""{"postcode":"BB00 0BB"}"""))
@@ -168,11 +167,9 @@ class AddressInsightsControllerIntegrationSpec
             |  "administrativeArea": "TEST COUNTY                ]"
             |}""".stripMargin
         )
-      }
-    }
 
-    "respond with BAD_REQUEST status" when {
-      "invalid json payload is provided" in {
+    "respond with BAD_REQUEST status" when:
+      "invalid json payload is provided" in:
         externalWireMockServer.stubFor(
           post(urlEqualTo(s"/address-insights/insights"))
             .withRequestBody(equalToJson("""{"address":{"line1":"1 High Street", "country":"United Kingdom"}}"""))
@@ -194,7 +191,3 @@ class AddressInsightsControllerIntegrationSpec
 
         response.status shouldBe BAD_REQUEST
         response.json shouldBe Json.parse("""{"statusCode":400,"message":"bad request, cause: invalid json"}""")
-      }
-    }
-  }
-}

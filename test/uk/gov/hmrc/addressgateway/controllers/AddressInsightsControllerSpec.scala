@@ -31,7 +31,7 @@ import play.api.test.Helpers._
 import play.core.server.{Server, ServerConfig}
 import uk.gov.hmrc.http.HeaderCarrier
 
-class AddressInsightsControllerSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite {
+class AddressInsightsControllerSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite:
   val insightsPort = 11222
 
   override lazy val app: Application = new GuiceApplicationBuilder()
@@ -41,10 +41,10 @@ class AddressInsightsControllerSpec extends AnyWordSpec with Matchers with Guice
   private val controller = app.injector.instanceOf[AddressInsightsController]
   implicit val mat: Materializer = app.injector.instanceOf[Materializer]
 
-  "POST /lookup" should {
-    implicit val hc: HeaderCarrier = HeaderCarrier()
+  "POST /lookup" should:
+    given hc: HeaderCarrier = HeaderCarrier()
 
-    "forward a 200 response from the downstream lookup service" in {
+    "forward a 200 response from the downstream lookup service" in:
       val response = """[{
                        |  "id": "GB200000706253",
                        |  "uprn": 200000706253,
@@ -98,13 +98,11 @@ class AddressInsightsControllerSpec extends AnyWordSpec with Matchers with Guice
         status(result) shouldBe Status.OK
         contentAsString(result) shouldBe response
       }
-    }
-  }
 
-  "POST /insights" should {
+  "POST /insights" should:
     implicit val hc: HeaderCarrier = HeaderCarrier()
 
-    "forward a 200 response from the downstream service" in {
+    "forward a 200 response from the downstream service" in:
       val response = """{
                        |"correlationId": "some-correlation-id",
                        |"address":{
@@ -144,9 +142,8 @@ class AddressInsightsControllerSpec extends AnyWordSpec with Matchers with Guice
         status(result) shouldBe Status.OK
         contentAsString(result) shouldBe response
       }
-    }
 
-    "forward a 400 response from the downstream service" in {
+    "forward a 400 response from the downstream service" in:
       val errorResponse = """{"code": "MALFORMED_JSON", "path.missing: address"}""".stripMargin
 
       Server.withRouterFromComponents(ServerConfig(port = Some(insightsPort))) { components =>
@@ -167,9 +164,8 @@ class AddressInsightsControllerSpec extends AnyWordSpec with Matchers with Guice
         status(result) shouldBe Status.BAD_REQUEST
         contentAsString(result) shouldBe errorResponse
       }
-    }
 
-    "handle a malformed json payload" in {
+    "handle a malformed json payload" in:
       val errorResponse = """{"code": "MALFORMED_JSON", "path.missing: address"}""".stripMargin
 
       Server.withRouterFromComponents(ServerConfig(port = Some(insightsPort))) { components =>
@@ -186,9 +182,8 @@ class AddressInsightsControllerSpec extends AnyWordSpec with Matchers with Guice
         status(result) shouldBe Status.BAD_REQUEST
         contentAsString(result) shouldBe errorResponse
       }
-    }
 
-    "return bad gateway if there is no connectivity to the downstream service" in {
+    "return bad gateway if there is no connectivity to the downstream service" in:
       val errorResponse = """{"code": "REQUEST_DOWNSTREAM", "desc": "An issue occurred when the downstream service tried to handle the request"}""".stripMargin
 
       val fakeRequest = FakeRequest("POST", "/address-gateway/insights")
@@ -198,7 +193,3 @@ class AddressInsightsControllerSpec extends AnyWordSpec with Matchers with Guice
       val result = controller.insights()(fakeRequest)
       status(result) shouldBe Status.BAD_GATEWAY
       contentAsString(result) shouldBe errorResponse
-    }
-
-  }
-}

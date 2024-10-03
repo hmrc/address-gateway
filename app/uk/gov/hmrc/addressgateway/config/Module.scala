@@ -18,9 +18,6 @@ package uk.gov.hmrc.addressgateway.config
 
 import com.google.inject.AbstractModule
 
-class Module extends AbstractModule {
-
-  override def configure(): Unit = {
+class Module extends AbstractModule:
+  override def configure(): Unit =
     bind(classOf[AppConfig]).asEagerSingleton()
-  }
-}

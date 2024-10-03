@@ -21,11 +21,9 @@ import play.api.Configuration
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 @Singleton
-class AppConfig @Inject() (config: Configuration, servicesConfig: ServicesConfig) {
-
+class AppConfig @Inject() (config: Configuration, servicesConfig: ServicesConfig):
   val appName: String = config.get[String]("appName")
   val rejectInternalTraffic: Boolean = config.getOptional[Boolean]("microservice.rejectInternalTraffic").getOrElse(false)
   val internalAuthToken: String = config.get[String]("microservice.services.internal-auth.token")
   val insightsProxyBaseUrl: String = servicesConfig.baseUrl("address-insights-proxy")
   val lookupBaseUrl: String = servicesConfig.baseUrl("address-lookup")
-}

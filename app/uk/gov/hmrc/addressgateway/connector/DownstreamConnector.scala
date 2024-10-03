@@ -17,7 +17,7 @@
 package uk.gov.hmrc.addressgateway.connector
 
 import play.api.Logging
-import play.api.http.HeaderNames._
+import play.api.http.HeaderNames.*
 import play.api.http.{HeaderNames, HttpEntity, MimeTypes}
 import play.api.libs.json.{JsObject, JsValue}
 import play.api.mvc.Results.{BadGateway, InternalServerError, MethodNotAllowed}
@@ -31,15 +31,16 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class DownstreamConnector @Inject() (httpClient: HttpClientV2) extends Logging {
 
-  def forward(request: Request[AnyContent], url: String, authToken: String)(implicit ec: ExecutionContext): Future[Result] = {
-    import uk.gov.hmrc.http.HttpReads.Implicits.readRaw
+  def forward(request: Request[AnyContent], url: String, authToken: String)(using ec: ExecutionContext): Future[Result] = {
+    import uk.gov.hmrc.http.HttpReads.Implicits.given
+    import play.api.libs.ws.given
 
     logger.info(s"Forwarding to downstream url: $url")
 
     (request.method, request.headers(HeaderNames.CONTENT_TYPE)) match {
       case ("POST", MimeTypes.JSON) =>
         val onwardHeaders = request.headers.remove(CONTENT_LENGTH, HOST, AUTHORIZATION).headers
-        implicit val hc: HeaderCarrier = HeaderCarrier(authorization = Some(Authorization(authToken)))
+        given hc: HeaderCarrier = HeaderCarrier(authorization = Some(Authorization(authToken)))
 
         try {
           httpClient
@@ -47,7 +48,7 @@ class DownstreamConnector @Inject() (httpClient: HttpClientV2) extends Logging {
             .withBody(request.body.asJson.getOrElse(JsObject.empty)) // TODO: Better way to do this?
             .setHeader(onwardHeaders: _*)
             .execute[HttpResponse]
-            .map { response: HttpResponse =>
+            .map { response =>
               val returnHeaders = response.headers
                 .filterNot { case (n, _) => n == CONTENT_TYPE || n == CONTENT_LENGTH }
                 .view
@@ -75,9 +76,10 @@ class DownstreamConnector @Inject() (httpClient: HttpClientV2) extends Logging {
     }
   }
 
-  def checkConnectivity(url: String, authToken: String, body: JsValue = JsObject.empty)(implicit ec: ExecutionContext): Future[Boolean] = {
-    import uk.gov.hmrc.http.HttpReads.Implicits.readRaw
-    implicit val hc: HeaderCarrier = HeaderCarrier(authorization = Some(Authorization(authToken)))
+  def checkConnectivity(url: String, authToken: String, body: JsValue = JsObject.empty)(using ec: ExecutionContext): Future[Boolean] = {
+    import uk.gov.hmrc.http.HttpReads.Implicits.given
+    import play.api.libs.ws.given
+    given hc: HeaderCarrier = HeaderCarrier(authorization = Some(Authorization(authToken)))
 
     try {
       httpClient
