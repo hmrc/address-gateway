@@ -37,6 +37,33 @@
       },
       "required": ["line1", "country"]
     },
+    "reputation": {
+      "type": "object",
+      "properties": {
+        "assessment": {
+          "type": "object",
+          "properties": {
+            "action": {
+              "type": "string",
+              "enum": ["ACCEPT", "CHECK"]
+            },
+            "reasons": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "UPRN_COUNT_THRESHOLD_BREACHED",
+                  "LOCATION_REF_COUNT_THRESHOLD_BREACHED",
+                  "POSTCODE_COUNT_THRESHOLD_BREACHED",
+                  "ADDRESS_ON_WATCHLIST"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "required": ["assessment"]
+    },
     "insights": {
       "type": "object",
       "properties": {
@@ -69,6 +96,30 @@
               "items": {
                 "type": "object",
                 "properties": {
+                  "line1": {
+                    "type": "string"
+                  },
+                  "line2": {
+                    "type": "string"
+                  },
+                  "line3": {
+                    "type": "string"
+                  },
+                  "line4": {
+                    "type": "string"
+                  },
+                  "line5": {
+                    "type": "string"
+                  },
+                  "postcode": {
+                    "type": "string"
+                  },
+                  "uprn": {
+                    "type": "string"
+                  },
+                  "country": {
+                    "type": "string"
+                  },
                   "event_type": {
                     "type": "string"
                   },
@@ -92,6 +143,8 @@
                   }
                 },
                 "required": [
+                  "line1",
+                  "country",
                   "event_type",
                   "involvement_group",
                   "involvement_index",
