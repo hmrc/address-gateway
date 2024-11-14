@@ -14,10 +14,16 @@ info:
     
     For lookup, the response will provide 0 or more matching addresses.
 
-    For insights, given an address, the response will provide:
+    For risk, given an address, the response will provide:
 
     * Risk score from 0 (no risk) to 100 (high risk)
     * Reason providing an indication of why the risk score has been allocated
+    * Correlation Id - so you can reference the transaction in any feedback
+    
+    For reputation, given an address, the response will provide:
+
+    * Assessment with an action and reasons for this action
+    * Insights including watchlist check results and occurrences grouped by uprn, locationRef and postcode
     * Correlation Id - so you can reference the transaction in any feedback
 servers:
   - url: https://test-api.service.hmrc.gov.uk/misc/address
@@ -39,7 +45,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: 'docs/lookup-request.json'
+              $ref: 'docs/uk-address-lookup-request.json'
             example:
               postcode: "AA1 1ZZ"
               filter: "The Rectory"
@@ -102,7 +108,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: 'docs/risk-insights-request.json'
+              $ref: 'docs/risk-request.json'
             example:
               address:
                 line1: "1 High Street"
@@ -128,7 +134,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: 'docs/risk-insights-request.json'
+              $ref: 'docs/risk-request.json'
             example:
               address:
                 line1: "1 High Street"
@@ -168,7 +174,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: 'docs/risk-insights-request.json'
+              $ref: 'docs/reputation-sa-reg-request.json'
             example:
               address:
                 line1: "1 High Street"
@@ -183,7 +189,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'docs/insights-response.json'
+                $ref: 'docs/reputation-sa-reg-response.json'
               example:
                 correlationId: "c33b596c-2cdd-4bf7-a20c-8efd1b32802f"
                 address:

@@ -1,0 +1,54 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/object1614266033.json",
+  "title": "Root",
+  "type": "object",
+  "required": [
+    "address",
+    "lookbackDays"
+  ],
+  "properties": {
+    "address": {
+      "$id": "#root/address",
+      "title": "Address",
+      "description": "The Address to check",
+      "type": "object",
+      "properties": {
+        "line1": {
+          "type": "string"
+        },
+        "line2": {
+          "type": "string"
+        },
+        "line3": {
+          "type": "string"
+        },
+        "line4": {
+          "type": "string"
+        },
+        "line5": {
+          "type": "string"
+        },
+        "postcode": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 7
+        },
+        "uprn": {
+          "type": "string",
+          "maxLength": 12,
+          "minLength": 12
+        },
+        "country": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "line1",
+        "postcode",
+        "country"
+      ]
+    }
+  }
+}

@@ -17,11 +17,3 @@ This logic will change and become more refined as more checks are added.
 
 ### How to use the results
 The intended consumers of this API are services that need to check addresses for fraudulent behaviour.
-
-### Request\response details
-
-All requests must include a uniquely identifiable `user-agent` header. Please contact us for assistance when first connecting.  
-
-* POST /insights
-    * [Request](request-sample.json) ([schema](risk-insights-request.json))
-    * [Response](insights-response-sample.json) ([schema](risk-response.json))
