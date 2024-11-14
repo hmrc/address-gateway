@@ -1,6 +1,4 @@
 {
-  "scopes": [
-  ],
   "api": {
     "name": "Address",
     "description": "Validation, verification and insights into addresses - provided by CIP (Customer Insights Platform) Insights and Reputation.",
