@@ -44,7 +44,7 @@ class AddressInsightsController @Inject() (cc: ControllerComponents, config: App
       connector.forward(request, url, config.internalAuthToken)
     }
   }
-  def insights(): Action[AnyContent] = Action.async { implicit request =>
+  def reputation(): Action[AnyContent] = Action.async { implicit request =>
     toggledAuthorised(config.rejectInternalTraffic, AuthProviders(StandardApplication)) {
       val path = downstreamUri(request.target.uri.toString, "address-insights")
       val url = s"${config.insightsProxyBaseUrl}$path"
@@ -54,7 +54,7 @@ class AddressInsightsController @Inject() (cc: ControllerComponents, config: App
   }
 
   private def downstreamUri(uri: String, targetServiceContext: String): String =
-    uri.toString.replace(config.appName, targetServiceContext)
+    uri.replace(config.appName, targetServiceContext)
 
   def checkConnectivity(): Unit = {
     val insightsUrl = s"${config.insightsProxyBaseUrl}/address-insights/insights"

@@ -94,7 +94,7 @@ class AddressInsightsControllerSpec extends AnyWordSpec with Matchers with Guice
           .withJsonBody(requestAddressJson)
           .withHeaders("True-Calling-Client" -> "example-service", HeaderNames.CONTENT_TYPE -> MimeTypes.JSON)
 
-        val result = controller.insights()(fakeRequest)
+        val result = controller.reputation()(fakeRequest)
         status(result) shouldBe Status.OK
         contentAsString(result) shouldBe response
       }
@@ -110,6 +110,10 @@ class AddressInsightsControllerSpec extends AnyWordSpec with Matchers with Guice
                        |"address":{
                        | "line1":"1 High Street",
                        | "country":"United Kingdom"
+                       |},
+                       |"reputation": {
+                       |  "action": "ACCEPT",
+                       |  "reasons": []
                        |},
                        |"insights":{
                        |   "risk":{
@@ -140,7 +144,7 @@ class AddressInsightsControllerSpec extends AnyWordSpec with Matchers with Guice
           .withJsonBody(requestAddressJson)
           .withHeaders("True-Calling-Client" -> "example-service", HeaderNames.CONTENT_TYPE -> MimeTypes.JSON)
 
-        val result = controller.insights()(fakeRequest)
+        val result = controller.reputation()(fakeRequest)
         status(result) shouldBe Status.OK
         contentAsString(result) shouldBe response
       }
@@ -163,7 +167,7 @@ class AddressInsightsControllerSpec extends AnyWordSpec with Matchers with Guice
           .withJsonBody(Json.parse("""{"no-address": {}}"""))
           .withHeaders("True-Calling-Client" -> "example-service", HeaderNames.CONTENT_TYPE -> MimeTypes.JSON)
 
-        val result = controller.insights()(fakeRequest)
+        val result = controller.reputation()(fakeRequest)
         status(result) shouldBe Status.BAD_REQUEST
         contentAsString(result) shouldBe errorResponse
       }
@@ -182,7 +186,7 @@ class AddressInsightsControllerSpec extends AnyWordSpec with Matchers with Guice
           .withTextBody("""{""")
           .withHeaders("True-Calling-Client" -> "example-service", HeaderNames.CONTENT_TYPE -> MimeTypes.JSON)
 
-        val result = controller.insights()(fakeRequest)
+        val result = controller.reputation()(fakeRequest)
         status(result) shouldBe Status.BAD_REQUEST
         contentAsString(result) shouldBe errorResponse
       }
@@ -195,7 +199,7 @@ class AddressInsightsControllerSpec extends AnyWordSpec with Matchers with Guice
         .withJsonBody(Json.parse("""{"address": "AB123456C"}"""))
         .withHeaders("True-Calling-Client" -> "example-service", HeaderNames.CONTENT_TYPE -> MimeTypes.JSON)
 
-      val result = controller.insights()(fakeRequest)
+      val result = controller.reputation()(fakeRequest)
       status(result) shouldBe Status.BAD_GATEWAY
       contentAsString(result) shouldBe errorResponse
     }

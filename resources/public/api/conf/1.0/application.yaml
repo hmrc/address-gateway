@@ -120,46 +120,46 @@ paths:
           description: ''
           headers: { }
       deprecated: false
-  /risk:
-    post:
-      summary: Address risk
-      description: >
-        Check if the provided address is valid
-      operationId: AddressRisk
-      security:
-        - applicationRestricted: [ ]
-      parameters: []
-      requestBody:
-        description: ''
-        content:
-          application/json:
-            schema:
-              $ref: 'docs/risk-request.json'
-            example:
-              address:
-                line1: "1 High Street"
-                postcode: "EC1 2FG"
-                country: "United Kingdom"
-        required: true
-      responses:
-        '200':
-          description: ''
-          headers: { }
-          content:
-            application/json:
-              schema:
-                $ref: 'docs/risk-response.json'
-              example:
-                correlationId: "c33b596c-2cdd-4bf7-a20c-8efd1b32802f"
-                address:
-                  line1: "1 High Street"
-                  postcode: "EC1 2FG"
-                  country: "United Kingdom"
-                insights:
-                  risk:
-                    riskScore: 0
-                    reason: "ADDRESS_NOT_ON_WATCH_LIST"
-      deprecated: false
+#  /risk:
+#    post:
+#      summary: Address risk
+#      description: >
+#        Check if the provided address is valid
+#      operationId: AddressRisk
+#      security:
+#        - applicationRestricted: [ ]
+#      parameters: []
+#      requestBody:
+#        description: ''
+#        content:
+#          application/json:
+#            schema:
+#              $ref: 'docs/risk-request.json'
+#            example:
+#              address:
+#                line1: "1 High Street"
+#                postcode: "EC1 2FG"
+#                country: "United Kingdom"
+#        required: true
+#      responses:
+#        '200':
+#          description: ''
+#          headers: { }
+#          content:
+#            application/json:
+#              schema:
+#                $ref: 'docs/risk-response.json'
+#              example:
+#                correlationId: "c33b596c-2cdd-4bf7-a20c-8efd1b32802f"
+#                address:
+#                  line1: "1 High Street"
+#                  postcode: "EC1 2FG"
+#                  country: "United Kingdom"
+#                insights:
+#                  risk:
+#                    riskScore: 0
+#                    reason: "ADDRESS_NOT_ON_WATCH_LIST"
+#      deprecated: false
   /reputation/sa-reg:
     post:
       summary: Address reputation for sa-reg
