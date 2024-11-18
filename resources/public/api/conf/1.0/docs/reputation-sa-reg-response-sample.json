@@ -5,6 +5,7 @@
     "postcode": "EC1 2FG",
     "country": "United Kingdom"
   },
+  "lookbackDays": 120,
   "reputation": {
     "assessment": {
       "action": "CHECK",

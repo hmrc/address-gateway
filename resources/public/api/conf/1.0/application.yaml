@@ -111,54 +111,14 @@ paths:
               $ref: 'docs/risk-request.json'
             example:
               address:
-                line1: "1 High Street"
-                postcode: "EC1 2FG"
+                addressLine1: "1 High Street"
+                postCode: "EC1 2FG"
                 country: "United Kingdom"
         required: true
       responses:
         '204':
           description: ''
           headers: { }
-      deprecated: false
-  /risk:
-    post:
-      summary: Address risk
-      description: >
-        Check if the provided address is valid
-      operationId: AddressRisk
-      security:
-        - applicationRestricted: [ ]
-      parameters: []
-      requestBody:
-        description: ''
-        content:
-          application/json:
-            schema:
-              $ref: 'docs/risk-request.json'
-            example:
-              address:
-                line1: "1 High Street"
-                postcode: "EC1 2FG"
-                country: "United Kingdom"
-        required: true
-      responses:
-        '200':
-          description: ''
-          headers: { }
-          content:
-            application/json:
-              schema:
-                $ref: 'docs/risk-response.json'
-              example:
-                correlationId: "c33b596c-2cdd-4bf7-a20c-8efd1b32802f"
-                address:
-                  line1: "1 High Street"
-                  postcode: "EC1 2FG"
-                  country: "United Kingdom"
-                insights:
-                  risk:
-                    riskScore: 0
-                    reason: "ADDRESS_NOT_ON_WATCH_LIST"
       deprecated: false
   /reputation/sa-reg:
     post:
@@ -177,10 +137,9 @@ paths:
               $ref: 'docs/reputation-sa-reg-request.json'
             example:
               address:
-                line1: "1 High Street"
-                postcode: "EC1 2FG"
+                addressLine1: "1 High Street"
+                postCode: "EC1 2FG"
                 country: "United Kingdom"
-              lookbackDays: 120
         required: true
       responses:
         '200':
@@ -193,9 +152,10 @@ paths:
               example:
                 correlationId: "c33b596c-2cdd-4bf7-a20c-8efd1b32802f"
                 address:
-                  line1: "1 High Street"
-                  postcode: "EC1 2FG"
+                  addressLine1: "1 High Street"
+                  postCode: "EC1 2FG"
                   country: "United Kingdom"
+                lookbackDays: 120
                 reputation:
                   assessment:
                     action: "CHECK"
@@ -213,39 +173,39 @@ paths:
                         count: 0
                       byLocationRef:
                         addresses:
-                          - line1: "1 High Street"
-                            postcode: "EC1 2FG"
+                          - addressLine1: "1 High Street"
+                            postCode: "EC1 2FG"
                             country: "United Kingdom"
-                            event_type: "SARegistration"
-                            involvement_group: "sa-reg"
-                            involvement_index: 1
-                            request_id: "some-request-uuid"
-                            session_id: "some-session-uuid"
-                            user_id: "joe-bloggs"
-                            event_time: "2024-09-17T05:07:23.123"
-                          - line1: "1 High Road"
-                            postcode: "EC1 2FF"
+                            eventType: "SARegistration"
+                            involvementGroup: "home-address"
+                            involvementIndex: 1
+                            requestId: "some-request-uuid"
+                            sessionId: "some-session-uuid"
+                            userId: "joe-bloggs"
+                            eventTime: "2024-09-17T05:07:23.123"
+                          - addressLine1: "1 High Road"
+                            postCode: "EC1 2FF"
                             country: "United Kingdom"
-                            event_type: "SARegistration"
-                            involvement_group: "sa-reg"
-                            involvement_index: 2
-                            request_id: "some-other-request-uuid"
-                            session_id: "some-other-session-uuid"
-                            user_id: "joe-bloggs"
-                            event_time: "2024-09-17T05:07:29.321"
+                            eventType: "SARegistration"
+                            involvementGroup: "home-address"
+                            involvementIndex: 2
+                            requestId: "some-other-request-uuid"
+                            sessionId: "some-other-session-uuid"
+                            userId: "joe-bloggs"
+                            eventTime: "2024-09-17T05:07:29.321"
                         count: 2
-                      byPostcode:
+                      byPostCode:
                         addresses:
-                          - line1: "1 High Street"
-                            postcode: "EC1 2FG"
+                          - addressLine1: "1 High Street"
+                            postCode: "EC1 2FG"
                             country: "United Kingdom"
-                            event_type: "SARegistration"
-                            involvement_group: "sa-reg"
-                            involvement_index: 1
-                            request_id: "some-request-uuid"
-                            session_id: "some-session-uuid"
-                            user_id: "joe-bloggs"
-                            event_time: "2024-09-17T05:07:23.123"
+                            eventType: "SARegistration"
+                            involvementGroup: "home-address"
+                            involvementIndex: 1
+                            requestId: "some-request-uuid"
+                            sessionId: "some-session-uuid"
+                            userId: "joe-bloggs"
+                            eventTime: "2024-09-17T05:07:23.123"
                         count: 1
 
       deprecated: false

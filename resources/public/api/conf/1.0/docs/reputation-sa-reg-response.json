@@ -10,22 +10,22 @@
     "address": {
       "type": "object",
       "properties": {
-        "line1": {
+        "addressLine1": {
           "type": "string"
         },
-        "line2": {
+        "addressLine2": {
           "type": "string"
         },
-        "line3": {
+        "addressLine3": {
           "type": "string"
         },
-        "line4": {
+        "addressLine4": {
           "type": "string"
         },
-        "line5": {
+        "addressLine5": {
           "type": "string"
         },
-        "postcode": {
+        "postCode": {
           "type": "string"
         },
         "uprn": {
@@ -35,7 +35,11 @@
           "type": "string"
         }
       },
-      "required": ["line1", "country"]
+      "required": ["addressLine1", "country"]
+    },
+    "lookbackDays": {
+      "description": "The number of days in which to look for matches",
+      "type": "integer"
     },
     "reputation": {
       "type": "object",
@@ -45,16 +49,18 @@
           "properties": {
             "action": {
               "type": "string",
-              "enum": ["ACCEPT", "CHECK"]
+              "enum": ["ACCEPT", "CHECK", "REJECT"]
             },
             "reasons": {
               "type": "array",
               "items": {
                 "type": "string",
                 "enum": [
-                  "UPRN_COUNT_THRESHOLD_BREACHED",
-                  "LOCATION_REF_COUNT_THRESHOLD_BREACHED",
-                  "POSTCODE_COUNT_THRESHOLD_BREACHED",
+                  "IMMEDIATE_RISK_4HR_POSTCODE_THRESHOLD_BREACHED",
+                  "IMMEDIATE_RISK_12HR_LOCATIONREF_THRESHOLD_BREACHED",
+                  "IMMEDIATE_RISK_24HR_POSTCODE_THRESHOLD_BREACHED",
+                  "LONGER_TERM_RISK_120DAYS_POSTCODE_THRESHOLD_BREACHED",
+                  "LONGER_TERM_RISK_120DAYS_LOCATIONREF_THRESHOLD_BREACHED",
                   "ADDRESS_ON_WATCHLIST"
                 ]
               }
@@ -96,22 +102,22 @@
               "items": {
                 "type": "object",
                 "properties": {
-                  "line1": {
+                  "addressLine1": {
                     "type": "string"
                   },
-                  "line2": {
+                  "addressLine2": {
                     "type": "string"
                   },
-                  "line3": {
+                  "addressLine3": {
                     "type": "string"
                   },
-                  "line4": {
+                  "addressLine4": {
                     "type": "string"
                   },
-                  "line5": {
+                  "addressLine5": {
                     "type": "string"
                   },
-                  "postcode": {
+                  "postCode": {
                     "type": "string"
                   },
                   "uprn": {
@@ -120,38 +126,38 @@
                   "country": {
                     "type": "string"
                   },
-                  "event_type": {
+                  "eventType": {
                     "type": "string"
                   },
-                  "involvement_group": {
+                  "involvementGroup": {
                     "type": "string"
                   },
-                  "involvement_index": {
+                  "involvementIndex": {
                     "type": "string"
                   },
-                  "request_id": {
+                  "requestId": {
                     "type": "string"
                   },
-                  "session_id": {
+                  "sessionId": {
                     "type": "string"
                   },
-                  "user_id": {
+                  "userId": {
                     "type": "string"
                   },
-                  "event_time": {
+                  "eventTime": {
                     "type": "string"
                   }
                 },
                 "required": [
-                  "line1",
+                  "addressLine1",
                   "country",
-                  "event_type",
-                  "involvement_group",
-                  "involvement_index",
-                  "request_id",
-                  "session_id",
-                  "user_id",
-                  "event_time"
+                  "eventType",
+                  "involvementGroup",
+                  "involvementIndex",
+                  "requestId",
+                  "sessionId",
+                  "userId",
+                  "eventTime"
                 ]
               }
             }
@@ -162,7 +168,9 @@
   },
   "required": [
     "correlationId",
-    "riskScore",
-    "reason"
+    "address",
+    "lookbackDays",
+    "reputation",
+    "insights"
   ]
 }
