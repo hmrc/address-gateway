@@ -15,22 +15,22 @@
       "description": "The Address to check",
       "type": "object",
       "properties": {
-        "line1": {
+        "addressLine1": {
           "type": "string"
         },
-        "line2": {
+        "addressLine2": {
           "type": "string"
         },
-        "line3": {
+        "addressLine3": {
           "type": "string"
         },
-        "line4": {
+        "addressLine4": {
           "type": "string"
         },
-        "line5": {
+        "addressLine5": {
           "type": "string"
         },
-        "postcode": {
+        "postCode": {
           "type": "string",
           "minLength": 5,
           "maxLength": 7
@@ -45,8 +45,8 @@
         }
       },
       "required": [
-        "line1",
-        "postcode",
+        "addressLine1",
+        "postCode",
         "country"
       ]
     }

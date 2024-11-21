@@ -52,29 +52,29 @@ class AddressInsightsControllerIntegrationSpec
 
   "AddressInsightsController" should {
     "respond with OK status" when {
-      "/insights called with valid json payload" in {
+      "/reputation/sa-reg called with valid json payload" in {
         externalWireMockServer.stubFor(
-          post(urlEqualTo(s"/address-insights/insights"))
-            .withRequestBody(equalToJson("""{"address":{"line1":"1 High Street", "country":"United Kingdom"}, "lookbackDays":120}"""))
+          post(urlEqualTo(s"/address-insights/reputation/sa-reg"))
+            .withRequestBody(equalToJson("""{"address":{"addressLine1":"1 High Street", "country":"United Kingdom"}}"""))
             .withHeader(HeaderNames.CONTENT_TYPE, equalTo(MimeTypes.JSON))
             .willReturn(
               aResponse()
                 .withBody(
-                  """{"correlationId":"220967234589763549876", "address":{}, "insights":  {"risk":{ "riskScore": 0, "reason": "ADDRESS_NOT_ON_WATCHLIST"}, "insights": {"occurrences": []}}}"""
+                  """{"correlationId":"220967234589763549876", "address":{"addressLine1":"1 High Street", "country":"United Kingdom"}, "lookbackDays": 10, "insights":  {"relationships": {"occurrences": {}}}}"""
                 )
                 .withStatus(OK)
             )
         )
         val response =
           wsClient
-            .url(s"$baseUrl/address-gateway/insights")
+            .url(s"$baseUrl/address-gateway/reputation/sa-reg")
             .withHttpHeaders(HeaderNames.CONTENT_TYPE -> MimeTypes.JSON)
-            .post("""{"address":{"line1":"1 High Street", "country":"United Kingdom"}, "lookbackDays":120}""")
+            .post("""{"address":{"addressLine1":"1 High Street", "country":"United Kingdom"}}""")
             .futureValue
 
         response.status shouldBe OK
         response.json shouldBe Json.parse(
-          """{"correlationId":"220967234589763549876", "address":{}, "insights":  {"risk":{ "riskScore": 0, "reason": "ADDRESS_NOT_ON_WATCHLIST"}, "insights": {"occurrences": []}}}"""
+          """{"correlationId":"220967234589763549876", "address":{"addressLine1":"1 High Street", "country":"United Kingdom"}, "lookbackDays": 10, "insights":  {"relationships": {"occurrences": {}}}}"""
         )
       }
     }
@@ -174,22 +174,22 @@ class AddressInsightsControllerIntegrationSpec
     "respond with BAD_REQUEST status" when {
       "invalid json payload is provided" in {
         externalWireMockServer.stubFor(
-          post(urlEqualTo(s"/address-insights/insights"))
-            .withRequestBody(equalToJson("""{"address":{"line1":"1 High Street", "country":"United Kingdom"}}"""))
+          post(urlEqualTo(s"/address-insights/reputation/sa-reg"))
+            .withRequestBody(equalToJson("""{"address":{"addressLine1":"1 High Street", "country":"United Kingdom"}}"""))
             .withHeader(HeaderNames.CONTENT_TYPE, equalTo(MediaTypes.`application/json`.value))
             .willReturn(
               aResponse()
                 .withBody(
-                  """{"correlationId":"220967234589763549876", "address":{}, "insights":  {"risk":{ "riskScore": 0, "reason": "ADDRESS_NOT_ON_WATCHLIST"}, "insights": {"occurrences": []}}}"""
+                  """{"correlationId":"220967234589763549876", "address":{"addressLine1":"1 High Street", "country":"United Kingdom"}, "lookbackDays": 10, "insights":  {"relationships": {"occurrences": {}}}}"""
                 )
                 .withStatus(OK)
             )
         )
         val response =
           wsClient
-            .url(s"$baseUrl/address-gateway/insights")
+            .url(s"$baseUrl/address-gateway/reputation/sa-reg")
             .withHttpHeaders(HeaderNames.CONTENT_TYPE -> MimeTypes.JSON)
-            .post("""{"address":{"line1":"1 High Street", "country":"United Kingdom"}""")
+            .post("""{"address":{"addressLine1":"1 High Street", "country":"United Kingdom"}""")
             .futureValue
 
         response.status shouldBe BAD_REQUEST
