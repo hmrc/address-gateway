@@ -35,7 +35,7 @@ class AddressInsightsControllerSpec extends AnyWordSpec with Matchers with Guice
   val insightsPort = 11222
 
   override lazy val app: Application = new GuiceApplicationBuilder()
-    .configure("microservice.services.address-insights-proxy.port" -> insightsPort)
+    .configure("microservice.services.address-reputation.port" -> insightsPort)
     .build()
 
   private val controller = app.injector.instanceOf[AddressInsightsController]
