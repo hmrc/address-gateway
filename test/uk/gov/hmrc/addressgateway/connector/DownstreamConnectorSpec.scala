@@ -35,7 +35,7 @@ class DownstreamConnectorSpec extends AnyWordSpec with Matchers with GuiceOneApp
   val insightsPort = 11222
 
   override lazy val app: Application = new GuiceApplicationBuilder()
-    .configure("microservice.services.address-insights-proxy.port" -> insightsPort)
+    .configure("microservice.services.address-reputation.port" -> insightsPort)
     .build()
 
   private val connector = app.injector.instanceOf[DownstreamConnector]
