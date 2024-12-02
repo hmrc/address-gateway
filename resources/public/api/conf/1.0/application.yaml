@@ -10,16 +10,10 @@ info:
 
     ### Address
 
-    This API enables your application to validate and/or get an opinion of the riskiness of an address.
+    This API enables your application to validate and/or get insights for an address.
     
     For lookup, the response will provide 0 or more matching addresses.
 
-    For risk, given an address, the response will provide:
-
-    * Risk score from 0 (no risk) to 100 (high risk)
-    * Reason providing an indication of why the risk score has been allocated
-    * Correlation Id - so you can reference the transaction in any feedback
-    
     For reputation, given an address, the response will provide:
 
     * Assessment with an action and reasons for this action
@@ -112,7 +106,7 @@ paths:
             example:
               address:
                 addressLine1: "1 High Street"
-                postCode: "EC1 2FG"
+                postcode: "EC1 2FG"
                 country: "United Kingdom"
         required: true
       responses:
@@ -138,7 +132,7 @@ paths:
             example:
               address:
                 addressLine1: "1 High Street"
-                postCode: "EC1 2FG"
+                postcode: "EC1 2FG"
                 country: "United Kingdom"
         required: true
       responses:
@@ -153,7 +147,7 @@ paths:
                 correlationId: "c33b596c-2cdd-4bf7-a20c-8efd1b32802f"
                 address:
                   addressLine1: "1 High Street"
-                  postCode: "EC1 2FG"
+                  postcode: "EC1 2FG"
                   country: "United Kingdom"
                 lookbackDays: 120
                 reputation:
@@ -163,9 +157,6 @@ paths:
                       - "LOCATION_REF_THRESHOLD_COUNT_BREACHED"
                       - "POSTCODE_THRESHOLD_COUNT_BREACHED"
                 insights:
-                  risk:
-                    riskScore: 0
-                    reason: "ADDRESS_NOT_ON_WATCH_LIST"
                   relationships:
                     occurrences:
                       byUprn:
@@ -174,21 +165,19 @@ paths:
                       byLocationRef:
                         addresses:
                           - addressLine1: "1 High Street"
-                            postCode: "EC1 2FG"
+                            postcode: "EC1 2FG"
                             country: "United Kingdom"
                             eventType: "SARegistration"
-                            involvementGroup: "home-address"
-                            involvementIndex: 1
+                            addressContext: "home_address_1"
                             requestId: "some-request-uuid"
                             sessionId: "some-session-uuid"
                             userId: "joe-bloggs"
                             eventTime: "2024-09-17T05:07:23.123"
                           - addressLine1: "1 High Road"
-                            postCode: "EC1 2FF"
+                            postcode: "EC1 2FF"
                             country: "United Kingdom"
                             eventType: "SARegistration"
-                            involvementGroup: "home-address"
-                            involvementIndex: 2
+                            addressContext: "home_address_2"
                             requestId: "some-other-request-uuid"
                             sessionId: "some-other-session-uuid"
                             userId: "joe-bloggs"
@@ -197,11 +186,10 @@ paths:
                       byPostCode:
                         addresses:
                           - addressLine1: "1 High Street"
-                            postCode: "EC1 2FG"
+                            postcode: "EC1 2FG"
                             country: "United Kingdom"
                             eventType: "SARegistration"
-                            involvementGroup: "home-address"
-                            involvementIndex: 1
+                            addressContext: "home_address_1"
                             requestId: "some-request-uuid"
                             sessionId: "some-session-uuid"
                             userId: "joe-bloggs"
