@@ -15,10 +15,6 @@
     }
   },
   "insights": {
-    "risk": {
-      "riskScore": 0,
-      "reason": "ADDRESS_NOT_ON_WATCH_LIST"
-    },
     "relationships": {
       "occurrences": {
         "byUprn": {
@@ -28,16 +24,15 @@
         "byLocationRef": {
           "addresses": [
             {
-              "line1": "1 High Street",
+              "addressLine1": "1 High Street",
               "postcode": "EC1 2FG",
               "country": "United Kingdom",
-              "event_type": "SARegistration",
-              "involvement_group": "sa-reg",
-              "involvement_index": "1",
-              "request_id": "some-request-uuid",
-              "session_id": "some-session-uuid",
-              "user_id": "joe-bloggs",
-              "event_time": "2024-09-17T05:07:23.123"
+              "eventType": "SARegistration",
+              "addressContext": "home_address_1",
+              "requestId": "some-request-uuid",
+              "sessionId": "some-session-uuid",
+              "userId": "joe-bloggs",
+              "eventTime": "2024-09-17T05:07:23.123"
             }
           ],
           "count": 1
@@ -48,13 +43,12 @@
               "line1": "1 High Street",
               "postcode": "EC1 2FG",
               "country": "United Kingdom",
-              "event_type": "SARegistration",
-              "involvement_group": "sa-reg",
-              "involvement_index": "1",
-              "request_id": "some-request-uuid",
-              "session_id": "some-session-uuid",
-              "user_id": "joe-bloggs",
-              "event_time": "2024-09-17T05:07:23.123"
+              "eventType": "SARegistration",
+              "addressContext": "home_address_1",
+              "requestId": "some-request-uuid",
+              "sessionId": "some-session-uuid",
+              "userId": "joe-bloggs",
+              "eventTime": "2024-09-17T05:07:23.123"
             }
           ],
           "count": 1

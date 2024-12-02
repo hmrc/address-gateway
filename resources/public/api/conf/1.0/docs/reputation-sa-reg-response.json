@@ -25,7 +25,7 @@
         "addressLine5": {
           "type": "string"
         },
-        "postCode": {
+        "postcode": {
           "type": "string"
         },
         "uprn": {
@@ -117,7 +117,7 @@
                   "addressLine5": {
                     "type": "string"
                   },
-                  "postCode": {
+                  "postcode": {
                     "type": "string"
                   },
                   "uprn": {
@@ -129,10 +129,7 @@
                   "eventType": {
                     "type": "string"
                   },
-                  "involvementGroup": {
-                    "type": "string"
-                  },
-                  "involvementIndex": {
+                  "addressContext": {
                     "type": "string"
                   },
                   "requestId": {
@@ -152,8 +149,7 @@
                   "addressLine1",
                   "country",
                   "eventType",
-                  "involvementGroup",
-                  "involvementIndex",
+                  "addressContext",
                   "requestId",
                   "sessionId",
                   "userId",
