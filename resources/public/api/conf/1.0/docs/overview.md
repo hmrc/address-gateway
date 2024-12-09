@@ -2,10 +2,13 @@
 
 ### Address Insights
 
-This API enables your application to get an opinion of the riskiness of an address.
+Given an address, the following APIs enables your application to:
 
-Given an address, the response will provide:
+- `/lookup`:
+    validate that an address matching the provided criteria exists and, if so, get its uprn
 
-* Risk score from 0 (no risk) to 100 (high risk)
-* Reason providing an indication of why the risk score has been allocated
-* Correlation Id - so you can reference the transaction in any feedback
+- `/cache`:
+    cache the given address details for a short time 
+
+- `/reputation/sa-reg`:
+    get an assessment on the reputation of the given address and find when it was last seen in cip
