@@ -30,7 +30,7 @@
         "addressLine5": {
           "type": "string"
         },
-        "postCode": {
+        "postcode": {
           "type": "string",
           "minLength": 5,
           "maxLength": 7
@@ -46,7 +46,7 @@
       },
       "required": [
         "addressLine1",
-        "postCode",
+        "postcode",
         "country"
       ]
     }
