@@ -45,7 +45,7 @@ class AddressInsightsControllerIntegrationSpec
     GuiceApplicationBuilder()
       .configure(
         "metrics.enabled" -> false,
-        "microservice.services.address-insights-proxy.port" -> externalWireMockPort,
+        "microservice.services.address-reputation.port" -> externalWireMockPort,
         "microservice.services.address-lookup.port" -> externalWireMockPort
       )
       .build()
@@ -54,7 +54,7 @@ class AddressInsightsControllerIntegrationSpec
     "respond with OK status" when {
       "/reputation/sa-reg called with valid json payload" in {
         externalWireMockServer.stubFor(
-          post(urlEqualTo(s"/address-insights/reputation/sa-reg"))
+          post(urlEqualTo(s"/address-reputation/reputation/sa-reg"))
             .withRequestBody(equalToJson("""{"address":{"addressLine1":"1 High Street", "country":"United Kingdom"}}"""))
             .withHeader(HeaderNames.CONTENT_TYPE, equalTo(MimeTypes.JSON))
             .willReturn(
@@ -174,7 +174,7 @@ class AddressInsightsControllerIntegrationSpec
     "respond with BAD_REQUEST status" when {
       "invalid json payload is provided" in {
         externalWireMockServer.stubFor(
-          post(urlEqualTo(s"/address-insights/reputation/sa-reg"))
+          post(urlEqualTo(s"/address-reputation/reputation/sa-reg"))
             .withRequestBody(equalToJson("""{"address":{"addressLine1":"1 High Street", "country":"United Kingdom"}}"""))
             .withHeader(HeaderNames.CONTENT_TYPE, equalTo(MediaTypes.`application/json`.value))
             .willReturn(

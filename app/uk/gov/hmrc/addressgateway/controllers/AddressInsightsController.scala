@@ -46,8 +46,8 @@ class AddressInsightsController @Inject() (cc: ControllerComponents, config: App
   }
   def insights(): Action[AnyContent] = Action.async { implicit request =>
     toggledAuthorised(config.rejectInternalTraffic, AuthProviders(StandardApplication)) {
-      val path = downstreamUri(request.target.uri.toString, "address-insights")
-      val url = s"${config.insightsProxyBaseUrl}$path"
+      val path = downstreamUri(request.target.uri.toString, "address-reputation")
+      val url = s"${config.reputationBaseUrl}$path"
 
       connector.forward(request, url, config.internalAuthToken)
     }
@@ -57,7 +57,7 @@ class AddressInsightsController @Inject() (cc: ControllerComponents, config: App
     uri.toString.replace(config.appName, targetServiceContext)
 
   def checkConnectivity(): Unit = {
-    val insightsUrl = s"${config.insightsProxyBaseUrl}/address-insights/insights"
+    val insightsUrl = s"${config.reputationBaseUrl}/address-reputation/reputation/sa-reg"
     val lookupUrl = s"${config.lookupBaseUrl}/address-lookup/lookup"
     val checkInsights = connector.checkConnectivity(
       insightsUrl,
@@ -70,13 +70,13 @@ class AddressInsightsController @Inject() (cc: ControllerComponents, config: App
 
     checkInsights.flatMap(i => checkLookup.map(l => (i, l))).map {
       case (true, true) =>
-        logger.info("Connectivity to address-insights-proxy and address-lookup established")
+        logger.info("Connectivity to address-reputation and address-lookup established")
       case (true, false) =>
         logger.error("ERROR: Could not connect to address-lookup")
       case (false, true) =>
-        logger.error("ERROR: Could not connect to address-insights-proxy")
+        logger.error("ERROR: Could not connect to address-reputation")
       case (false, false) =>
-        logger.error("ERROR: Could not connect to address-insights-proxy or address-lookup")
+        logger.error("ERROR: Could not connect to address-reputation or address-lookup")
     }
   }
 
