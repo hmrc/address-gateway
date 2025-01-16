@@ -2,8 +2,8 @@
   "correlationId": "4f55f43c-898e-4bb7-88af-57730ad55761",
   "address":
   {
-    "addressLine1": "1 test Road",
-    "postcode": "rm1 1sg",
+    "addressLine1": "1 High Street",
+    "postcode": "EC1 1FG",
     "country": "United Kingdom",
     "uprn": "1234567890"
   },
@@ -19,13 +19,13 @@
           "addresses":
           [
             {
-              "addressLine1": "1 Test Rd",
+              "addressLine1": "1 High Street",
               "addressLine2": "Enfield",
-              "postcode": "rm11sg",
+              "postcode": "EC1 1FG",
               "country": "United Kingdom",
               "eventType": "SARegistrationSubmitted",
               "addressContext": "home_address_1",
-              "requestId": "uprn-request-id-1",
+              "requestId": "test-request-id-1",
               "sessionId": "test-session-id",
               "userId": "test-user-id",
               "eventTime": "2025-01-09T19:36:47"
@@ -38,9 +38,9 @@
           "addresses":
           [
             {
-              "addressLine1": "1 Test Rd",
+              "addressLine1": "1 High Street",
               "addressLine2": "Enfield",
-              "postcode": "rm11sg",
+              "postcode": "EC1 1FG",
               "country": "United Kingdom",
               "eventType": "SARegistrationSubmitted",
               "addressContext": "home_address_1",
@@ -50,9 +50,9 @@
               "eventTime": "2025-01-16T08:31:47"
             },
             {
-              "addressLine1": "1 Test Rd",
+              "addressLine1": "1 High Street",
               "addressLine2": "Enfield",
-              "postcode": "rm11sg",
+              "postcode": "EC1 1FG",
               "country": "United Kingdom",
               "eventType": "SARegistrationSubmitted",
               "addressContext": "home_address_2",
@@ -62,9 +62,9 @@
               "eventTime": "2025-01-16T08:31:47"
             },
             {
-              "addressLine1": "1 Test Rd",
+              "addressLine1": "1 High Street",
               "addressLine2": "Enfield",
-              "postcode": "rm11sg",
+              "postcode": "EC1 1FG",
               "country": "United Kingdom",
               "eventType": "SARegistrationSubmitted",
               "addressContext": "home_address_3",
@@ -81,9 +81,9 @@
           "addresses":
           [
             {
-              "addressLine1": "1 Test Rd",
+              "addressLine1": "5 High Street",
               "addressLine2": "Enfield",
-              "postcode": "rm11sg",
+              "postcode": "EC1 1FG",
               "country": "United Kingdom",
               "eventType": "SARegistrationSubmitted",
               "addressContext": "home_address_1",
@@ -93,9 +93,9 @@
               "eventTime": "2025-01-16T08:31:47"
             },
             {
-              "addressLine1": "1 Test Rd",
+              "addressLine1": "10 High Street",
               "addressLine2": "Enfield",
-              "postcode": "rm11sg",
+              "postcode": "EC1 1FG",
               "country": "United Kingdom",
               "eventType": "SARegistrationSubmitted",
               "addressContext": "home_address_2",
@@ -105,9 +105,9 @@
               "eventTime": "2025-01-16T08:31:47"
             },
             {
-              "addressLine1": "1 Test Rd",
+              "addressLine1": "11 High Street",
               "addressLine2": "Enfield",
-              "postcode": "rm11sg",
+              "postcode": "EC1 1FG",
               "country": "United Kingdom",
               "eventType": "SARegistrationSubmitted",
               "addressContext": "home_address_3",

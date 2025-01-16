@@ -2,6 +2,7 @@
   "address": {
     "addressLine1": "1 High Street",
     "postcode": "EC1 1FG",
-    "country": "United Kingdom"
+    "country": "United Kingdom",
+    "uprn": "1234567890"
   }
 }
