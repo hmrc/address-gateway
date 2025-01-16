@@ -5,8 +5,7 @@
   "title": "Root",
   "type": "object",
   "required": [
-    "address",
-    "lookbackDays"
+    "address"
   ],
   "properties": {
     "address": {

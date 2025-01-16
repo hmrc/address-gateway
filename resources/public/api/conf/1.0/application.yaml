@@ -13,11 +13,11 @@ info:
     This API enables your application to validate and/or get insights for an address.
     
     For lookup, the response will provide 0 or more matching addresses.
-
+    
     For reputation, given an address, the response will provide:
 
     * Assessment with an action and reasons for this action
-    * Insights including watchlist check results and occurrences grouped by uprn, locationRef and postcode
+    * Insights including occurrences grouped by uprn, locationRef and postcode
     * Correlation Id - so you can reference the transaction in any feedback
 servers:
   - url: https://test-api.service.hmrc.gov.uk/misc/address
@@ -102,7 +102,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: 'docs/risk-request.json'
+              $ref: 'docs/cache-request.json'
             example:
               address:
                 addressLine1: "1 High Street"
@@ -154,20 +154,29 @@ paths:
                   assessment:
                     action: "CHECK"
                     reasons:
-                      - "LOCATION_REF_THRESHOLD_COUNT_BREACHED"
-                      - "POSTCODE_THRESHOLD_COUNT_BREACHED"
+                      - "IMMEDIATE_RISK_12HR_LOCATIONREF_THRESHOLD_BREACHED"
+                      - "LONGER_TERM_RISK_120DAYS_LOCATIONREF_THRESHOLD_BREACHED"
                 insights:
                   relationships:
                     occurrences:
                       byUprn:
                         addresses:
-                        count: 0
+                          - addressLine1: "1 High Street"
+                            postcode: "EC1 2FG"
+                            country: "United Kingdom"
+                            eventType: "SARegistrationSubmitted"
+                            addressContext: "home_address_1"
+                            requestId: "some-request-uuid"
+                            sessionId: "some-session-uuid"
+                            userId: "joe-bloggs"
+                            eventTime: "2024-09-17T05:07:23.123"
+                        count: 1
                       byLocationRef:
                         addresses:
                           - addressLine1: "1 High Street"
                             postcode: "EC1 2FG"
                             country: "United Kingdom"
-                            eventType: "SARegistration"
+                            eventType: "SARegistrationSubmitted"
                             addressContext: "home_address_1"
                             requestId: "some-request-uuid"
                             sessionId: "some-session-uuid"
@@ -176,19 +185,28 @@ paths:
                           - addressLine1: "1 High Road"
                             postcode: "EC1 2FF"
                             country: "United Kingdom"
-                            eventType: "SARegistration"
+                            eventType: "SARegistrationSubmitted"
                             addressContext: "home_address_2"
                             requestId: "some-other-request-uuid"
                             sessionId: "some-other-session-uuid"
                             userId: "joe-bloggs"
                             eventTime: "2024-09-17T05:07:29.321"
+                          - addressLine1: "1 High Road"
+                            postcode: "EC1 2FF"
+                            country: "United Kingdom"
+                            eventType: "SARegistrationSubmitted"
+                            addressContext: "home_address_3"
+                            requestId: "some-other-request-uuid"
+                            sessionId: "some-other-session-uuid"
+                            userId: "joe-bloggs"
+                            eventTime: "2024-09-17T05:07:29.321"
                         count: 2
-                      byPostCode:
+                      byPostcode:
                         addresses:
                           - addressLine1: "1 High Street"
                             postcode: "EC1 2FG"
                             country: "United Kingdom"
-                            eventType: "SARegistration"
+                            eventType: "SARegistrationSubmitted"
                             addressContext: "home_address_1"
                             requestId: "some-request-uuid"
                             sessionId: "some-session-uuid"
