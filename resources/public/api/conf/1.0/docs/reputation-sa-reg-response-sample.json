@@ -1,59 +1,137 @@
 {
-  "correlationId": "c33b596c-2cdd-4bf7-a20c-8efd1b32802f",
-  "address": {
-    "line1": "1 High Street",
-    "postcode": "EC1 2FG",
-    "country": "United Kingdom"
+  "correlationId": "4f55f43c-898e-4bb7-88af-57730ad55761",
+  "address":
+  {
+    "addressLine1": "1 High Street",
+    "postcode": "EC1 1FG",
+    "country": "United Kingdom",
+    "uprn": "1234567890"
   },
   "lookbackDays": 120,
-  "reputation": {
-    "assessment": {
-      "action": "CHECK",
-      "reasons": [
-        "LOCATION_REF_COUNT_THRESHOLD_BREACHED"
-      ]
-    }
-  },
-  "insights": {
-    "relationships": {
-      "occurrences": {
-        "byUprn": {
-          "addresses": [],
-          "count": 0
-        },
-        "byLocationRef": {
-          "addresses": [
+  "insights":
+  {
+    "relationships":
+    {
+      "occurrences":
+      {
+        "byUprn":
+        {
+          "addresses":
+          [
             {
               "addressLine1": "1 High Street",
-              "postcode": "EC1 2FG",
+              "addressLine2": "Enfield",
+              "postcode": "EC1 1FG",
               "country": "United Kingdom",
-              "eventType": "SARegistration",
+              "eventType": "SARegistrationSubmitted",
               "addressContext": "home_address_1",
-              "requestId": "some-request-uuid",
-              "sessionId": "some-session-uuid",
-              "userId": "joe-bloggs",
-              "eventTime": "2024-09-17T05:07:23.123"
+              "requestId": "test-request-id-1",
+              "sessionId": "test-session-id",
+              "userId": "test-user-id",
+              "eventTime": "2025-01-09T19:36:47"
             }
           ],
           "count": 1
         },
-        "byPostcode": {
-          "addresses": [
+        "byLocationRef":
+        {
+          "addresses":
+          [
             {
-              "line1": "1 High Street",
-              "postcode": "EC1 2FG",
+              "addressLine1": "1 High Street",
+              "addressLine2": "Enfield",
+              "postcode": "EC1 1FG",
               "country": "United Kingdom",
-              "eventType": "SARegistration",
+              "eventType": "SARegistrationSubmitted",
               "addressContext": "home_address_1",
-              "requestId": "some-request-uuid",
-              "sessionId": "some-session-uuid",
-              "userId": "joe-bloggs",
-              "eventTime": "2024-09-17T05:07:23.123"
+              "requestId": "loc-request-id-1",
+              "sessionId": "test-session-id",
+              "userId": "test-user-id",
+              "eventTime": "2025-01-16T08:31:47"
+            },
+            {
+              "addressLine1": "1 High Street",
+              "addressLine2": "Enfield",
+              "postcode": "EC1 1FG",
+              "country": "United Kingdom",
+              "eventType": "SARegistrationSubmitted",
+              "addressContext": "home_address_2",
+              "requestId": "loc-request-id-2",
+              "sessionId": "test-session-id",
+              "userId": "test-user-id",
+              "eventTime": "2025-01-16T08:31:47"
+            },
+            {
+              "addressLine1": "1 High Street",
+              "addressLine2": "Enfield",
+              "postcode": "EC1 1FG",
+              "country": "United Kingdom",
+              "eventType": "SARegistrationSubmitted",
+              "addressContext": "home_address_3",
+              "requestId": "loc-request-id-3",
+              "sessionId": "test-session-id",
+              "userId": "test-user-id",
+              "eventTime": "2025-01-16T08:31:47"
             }
           ],
-          "count": 1
+          "count": 3
+        },
+        "byPostCode":
+        {
+          "addresses":
+          [
+            {
+              "addressLine1": "5 High Street",
+              "addressLine2": "Enfield",
+              "postcode": "EC1 1FG",
+              "country": "United Kingdom",
+              "eventType": "SARegistrationSubmitted",
+              "addressContext": "home_address_1",
+              "requestId": "loc-request-id-1",
+              "sessionId": "test-session-id",
+              "userId": "test-user-id",
+              "eventTime": "2025-01-16T08:31:47"
+            },
+            {
+              "addressLine1": "10 High Street",
+              "addressLine2": "Enfield",
+              "postcode": "EC1 1FG",
+              "country": "United Kingdom",
+              "eventType": "SARegistrationSubmitted",
+              "addressContext": "home_address_2",
+              "requestId": "loc-request-id-2",
+              "sessionId": "test-session-id",
+              "userId": "test-user-id",
+              "eventTime": "2025-01-16T08:31:47"
+            },
+            {
+              "addressLine1": "11 High Street",
+              "addressLine2": "Enfield",
+              "postcode": "EC1 1FG",
+              "country": "United Kingdom",
+              "eventType": "SARegistrationSubmitted",
+              "addressContext": "home_address_3",
+              "requestId": "loc-request-id-3",
+              "sessionId": "test-session-id",
+              "userId": "test-user-id",
+              "eventTime": "2025-01-16T08:31:47"
+            }
+          ],
+          "count": 3
         }
       }
+    }
+  },
+  "reputation":
+  {
+    "assessment":
+    {
+      "action": "CHECK",
+      "reasons":
+      [
+        "IMMEDIATE_RISK_12HR_LOCATIONREF_THRESHOLD_BREACHED",
+        "LONGER_TERM_RISK_120DAYS_LOCATIONREF_THRESHOLD_BREACHED"
+      ]
     }
   }
 }

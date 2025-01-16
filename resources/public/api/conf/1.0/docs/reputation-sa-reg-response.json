@@ -39,7 +39,252 @@
     },
     "lookbackDays": {
       "description": "The number of days in which to look for matches",
-      "type": "integer"
+      "type": "number"
+    },
+    "insights": {
+      "type": "object",
+      "properties": {
+        "relationships": {
+          "type": "object",
+          "properties": {
+            "occurrences": {
+              "type": "object",
+              "properties": {
+                "byUprn": {
+                  "type": "object",
+                  "properties": {
+                    "addresses": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "addressLine1": {
+                            "type": "string"
+                          },
+                          "addressLine2": {
+                            "type": "string"
+                          },
+                          "addressLine3": {
+                            "type": "string"
+                          },
+                          "addressLine4": {
+                            "type": "string"
+                          },
+                          "addressLine5": {
+                            "type": "string"
+                          },
+                          "postcode": {
+                            "type": "string"
+                          },
+                          "country": {
+                            "type": "string"
+                          },
+                          "uprn": {
+                            "type": "string"
+                          },
+                          "eventType": {
+                            "type": "string"
+                          },
+                          "addressContext": {
+                            "type": "string"
+                          },
+                          "requestId": {
+                            "type": "string"
+                          },
+                          "sessionId": {
+                            "type": "string"
+                          },
+                          "userId": {
+                            "type": "string"
+                          },
+                          "eventTime": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "addressLine1",
+                          "postcode",
+                          "country",
+                          "eventType",
+                          "addressContext",
+                          "requestId",
+                          "sessionId",
+                          "userId",
+                          "eventTime"
+                        ]
+                      }
+                    },
+                    "count": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "addresses",
+                    "count"
+                  ]
+                },
+                "byLocationRef": {
+                  "type": "object",
+                  "properties": {
+                    "addresses": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "addressLine1": {
+                            "type": "string"
+                          },
+                          "addressLine2": {
+                            "type": "string"
+                          },
+                          "addressLine3": {
+                            "type": "string"
+                          },
+                          "addressLine4": {
+                            "type": "string"
+                          },
+                          "addressLine5": {
+                            "type": "string"
+                          },
+                          "postcode": {
+                            "type": "string"
+                          },
+                          "country": {
+                            "type": "string"
+                          },
+                          "uprn": {
+                            "type": "string"
+                          },
+                          "eventType": {
+                            "type": "string"
+                          },
+                          "addressContext": {
+                            "type": "string"
+                          },
+                          "requestId": {
+                            "type": "string"
+                          },
+                          "sessionId": {
+                            "type": "string"
+                          },
+                          "userId": {
+                            "type": "string"
+                          },
+                          "eventTime": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "addressLine1",
+                          "postcode",
+                          "country",
+                          "eventType",
+                          "addressContext",
+                          "requestId",
+                          "sessionId",
+                          "userId",
+                          "eventTime"
+                        ]
+                      }
+                    },
+                    "count": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "addresses",
+                    "count"
+                  ]
+                },
+                "byPostCode": {
+                  "type": "object",
+                  "properties": {
+                    "addresses": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "addressLine1": {
+                            "type": "string"
+                          },
+                          "addressLine2": {
+                            "type": "string"
+                          },
+                          "addressLine3": {
+                            "type": "string"
+                          },
+                          "addressLine4": {
+                            "type": "string"
+                          },
+                          "addressLine5": {
+                            "type": "string"
+                          },
+                          "postcode": {
+                            "type": "string"
+                          },
+                          "country": {
+                            "type": "string"
+                          },
+                          "uprn": {
+                            "type": "string"
+                          },
+                          "eventType": {
+                            "type": "string"
+                          },
+                          "addressContext": {
+                            "type": "string"
+                          },
+                          "requestId": {
+                            "type": "string"
+                          },
+                          "sessionId": {
+                            "type": "string"
+                          },
+                          "userId": {
+                            "type": "string"
+                          },
+                          "eventTime": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "addressLine1",
+                          "postcode",
+                          "country",
+                          "eventType",
+                          "addressContext",
+                          "requestId",
+                          "sessionId",
+                          "userId",
+                          "eventTime"
+                        ]
+                      }
+                    },
+                    "count": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "addresses",
+                    "count"
+                  ]
+                }
+              },
+              "required": [
+                "byUprn",
+                "byLocationRef",
+                "byPostCode"
+              ]
+            }
+          },
+          "required": [
+            "occurrences"
+          ]
+        }
+      },
+      "required": [
+        "relationships"
+      ]
     },
     "reputation": {
       "type": "object",
@@ -49,7 +294,7 @@
           "properties": {
             "action": {
               "type": "string",
-              "enum": ["ACCEPT", "CHECK", "REJECT"]
+              "enum": ["ACCEPT", "CHECK"]
             },
             "reasons": {
               "type": "array",
@@ -60,113 +305,26 @@
                   "IMMEDIATE_RISK_12HR_LOCATIONREF_THRESHOLD_BREACHED",
                   "IMMEDIATE_RISK_24HR_POSTCODE_THRESHOLD_BREACHED",
                   "LONGER_TERM_RISK_120DAYS_POSTCODE_THRESHOLD_BREACHED",
-                  "LONGER_TERM_RISK_120DAYS_LOCATIONREF_THRESHOLD_BREACHED",
-                  "ADDRESS_ON_WATCHLIST"
-                ]
+                  "LONGER_TERM_RISK_120DAYS_LOCATIONREF_THRESHOLD_BREACHED"                ]
               }
-            }
-          }
-        }
-      },
-      "required": ["assessment"]
-    },
-    "insights": {
-      "type": "object",
-      "properties": {
-        "risk": {
-          "type": "object",
-          "properties": {
-            "riskScore": {
-              "description": "Risk score",
-              "type": "number",
-              "minimum": 0,
-              "maximum": 100
-            },
-            "reason": {
-              "description": "Reason for risk score",
-              "type": "string",
-              "minimum": 0,
-              "maximum": 256
             }
           },
           "required": [
-            "riskScore",
-            "reason"
+            "action",
+            "reasons"
           ]
-        },
-        "relationships": {
-          "type": "object",
-          "properties": {
-            "occurrences": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "addressLine1": {
-                    "type": "string"
-                  },
-                  "addressLine2": {
-                    "type": "string"
-                  },
-                  "addressLine3": {
-                    "type": "string"
-                  },
-                  "addressLine4": {
-                    "type": "string"
-                  },
-                  "addressLine5": {
-                    "type": "string"
-                  },
-                  "postcode": {
-                    "type": "string"
-                  },
-                  "uprn": {
-                    "type": "string"
-                  },
-                  "country": {
-                    "type": "string"
-                  },
-                  "eventType": {
-                    "type": "string"
-                  },
-                  "addressContext": {
-                    "type": "string"
-                  },
-                  "requestId": {
-                    "type": "string"
-                  },
-                  "sessionId": {
-                    "type": "string"
-                  },
-                  "userId": {
-                    "type": "string"
-                  },
-                  "eventTime": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "addressLine1",
-                  "country",
-                  "eventType",
-                  "addressContext",
-                  "requestId",
-                  "sessionId",
-                  "userId",
-                  "eventTime"
-                ]
-              }
-            }
-          }
         }
-      }
+      },
+      "required": [
+        "assessment"
+      ]
     }
   },
   "required": [
     "correlationId",
     "address",
     "lookbackDays",
-    "reputation",
-    "insights"
+    "insights",
+    "reputation"
   ]
 }
