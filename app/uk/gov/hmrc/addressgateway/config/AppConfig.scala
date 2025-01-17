@@ -26,6 +26,6 @@ class AppConfig @Inject() (config: Configuration, servicesConfig: ServicesConfig
   val appName: String = config.get[String]("appName")
   val rejectInternalTraffic: Boolean = config.getOptional[Boolean]("microservice.rejectInternalTraffic").getOrElse(false)
   val internalAuthToken: String = config.get[String]("microservice.services.internal-auth.token")
-  val insightsProxyBaseUrl: String = servicesConfig.baseUrl("address-insights-proxy")
+  val addressReputationBaseUrl: String = servicesConfig.baseUrl("address-reputation")
   val lookupBaseUrl: String = servicesConfig.baseUrl("address-lookup")
 }
