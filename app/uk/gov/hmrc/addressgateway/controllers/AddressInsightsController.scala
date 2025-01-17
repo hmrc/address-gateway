@@ -46,8 +46,8 @@ class AddressInsightsController @Inject() (cc: ControllerComponents, config: App
   }
   def insights(): Action[AnyContent] = Action.async { implicit request =>
     toggledAuthorised(config.rejectInternalTraffic, AuthProviders(StandardApplication)) {
-      val path = downstreamUri(request.target.uri.toString, "address-insights")
-      val url = s"${config.insightsProxyBaseUrl}$path"
+      val path = downstreamUri(request.target.uri.toString, "address-reputation")
+      val url = s"${config.addressReputationBaseUrl}$path"
 
       connector.forward(request, url, config.internalAuthToken)
     }
@@ -57,10 +57,10 @@ class AddressInsightsController @Inject() (cc: ControllerComponents, config: App
     uri.toString.replace(config.appName, targetServiceContext)
 
   def checkConnectivity(): Unit = {
-    val insightsUrl = s"${config.insightsProxyBaseUrl}/address-insights/insights"
+    val reputationUrl = s"${config.addressReputationBaseUrl}/address-reputation/reputation/sa-reg"
     val lookupUrl = s"${config.lookupBaseUrl}/address-lookup/lookup"
-    val checkInsights = connector.checkConnectivity(
-      insightsUrl,
+    val checkReputation = connector.checkConnectivity(
+      reputationUrl,
       config.internalAuthToken
     )
     val checkLookup = connector.checkConnectivity(
@@ -68,7 +68,7 @@ class AddressInsightsController @Inject() (cc: ControllerComponents, config: App
       config.internalAuthToken
     )
 
-    checkInsights.flatMap(i => checkLookup.map(l => (i, l))).map {
+    checkReputation.flatMap(i => checkLookup.map(l => (i, l))).map {
       case (true, true) =>
         logger.info("Connectivity to address-insights-proxy and address-lookup established")
       case (true, false) =>
