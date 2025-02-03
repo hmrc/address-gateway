@@ -12,7 +12,16 @@ address-search-api-->>address-lookup: response [address]
 address-lookup-->>address-gateway: response [address]
 ```
 
-`address-reputation`
+`address-reputation/cache`
+```mermaid
+sequenceDiagram
+address-gateway->>address-reputation: /cache <address, saRegAddressIdentifier>
+address-reputation->>address-insights: /cache <address, saRegAddressIdentifier>
+address-insights-->>address-reputation: no-content response
+address-reputation-->>address-gateway: no-content response
+```
+
+`address-reputation/reputation/sa-reg`
 ```mermaid
 sequenceDiagram
 address-gateway->>address-reputation: /reputation/sa-reg <address>

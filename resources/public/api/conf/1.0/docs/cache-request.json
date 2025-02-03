@@ -5,7 +5,8 @@
   "title": "Root",
   "type": "object",
   "required": [
-    "address"
+    "address",
+    "saRegAddressIdentifier"
   ],
   "properties": {
     "address": {
@@ -48,6 +49,10 @@
         "postcode",
         "country"
       ]
+    },
+    "saRegAddressIdentifier": {
+      "type": "string",
+      "description": "For sa-reg, this field is populated with the pageCaseId"
     }
   }
 }

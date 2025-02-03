@@ -90,7 +90,7 @@ paths:
       deprecated: false
   /cache:
     post:
-      summary: Address risk
+      summary: Address cache for sa-reg
       description: >
         Store the given address for short term
       operationId: AddressCache
@@ -108,6 +108,7 @@ paths:
                 addressLine1: "1 High Street"
                 postcode: "EC1 2FG"
                 country: "United Kingdom"
+              saRegAddressIdentifier: "12AB34784"
         required: true
       responses:
         '204':
