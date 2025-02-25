@@ -6,7 +6,7 @@
   "type": "object",
   "required": [
     "address",
-    "saRegAddressIdentifier"
+    "caseId"
   ],
   "properties": {
     "address": {
@@ -50,7 +50,7 @@
         "country"
       ]
     },
-    "saRegAddressIdentifier": {
+    "caseId": {
       "type": "string",
       "description": "For sa-reg, this field is populated with the pageCaseId"
     }
