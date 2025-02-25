@@ -15,8 +15,8 @@ address-lookup-->>address-gateway: response [address]
 `address-reputation/cache`
 ```mermaid
 sequenceDiagram
-address-gateway->>address-reputation: /cache <address, saRegAddressIdentifier>
-address-reputation->>address-insights: /cache <address, saRegAddressIdentifier>
+address-gateway->>address-reputation: /cache <address, caseId>
+address-reputation->>address-insights: /cache <address, caseId>
 address-insights-->>address-reputation: no-content response
 address-reputation-->>address-gateway: no-content response
 ```
