@@ -11,7 +11,7 @@
         "access": {
           "type": "PRIVATE"
         },
-        "endpointsEnabled": false
+        "endpointsEnabled": true
       }
     ]
   }
