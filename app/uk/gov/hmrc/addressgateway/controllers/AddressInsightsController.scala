@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.addressgateway.controllers
 
-import play.api.Logger
 import play.api.mvc._
 import uk.gov.hmrc.addressgateway.ToggledAuthorisedFunctions
 import uk.gov.hmrc.addressgateway.config.AppConfig
@@ -33,8 +32,6 @@ class AddressInsightsController @Inject() (cc: ControllerComponents, config: App
   implicit ec: ExecutionContext
 ) extends BackendController(cc)
     with ToggledAuthorisedFunctions {
-
-  private val logger = Logger(this.getClass.getSimpleName)
 
   def lookup(): Action[AnyContent] = Action.async { implicit request =>
     toggledAuthorised(config.rejectInternalTraffic, AuthProviders(StandardApplication)) {
@@ -54,6 +51,6 @@ class AddressInsightsController @Inject() (cc: ControllerComponents, config: App
   }
 
   private def downstreamUri(uri: String, targetServiceContext: String): String =
-    uri.toString.replace(config.appName, targetServiceContext)
+    uri.replace(config.appName, targetServiceContext)
 
 }
