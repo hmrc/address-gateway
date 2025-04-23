@@ -44,7 +44,7 @@ class DownstreamConnector @Inject() (httpClient: HttpClientV2) extends Logging {
         try {
           httpClient
             .post(url"$url")
-            .withBody(request.body.asJson.getOrElse(JsObject.empty)) // TODO: Better way to do this?
+            .withBody(request.body.asJson.getOrElse(JsObject.empty))
             .setHeader(onwardHeaders: _*)
             .execute[HttpResponse]
             .map { response: HttpResponse =>
