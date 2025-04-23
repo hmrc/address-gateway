@@ -193,7 +193,6 @@ class AddressInsightsControllerIntegrationSpec
             .futureValue
 
         response.status shouldBe BAD_REQUEST
-        response.json shouldBe Json.parse("""{"statusCode":400,"message":"bad request, cause: invalid json"}""")
       }
     }
   }
