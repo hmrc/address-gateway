@@ -19,7 +19,7 @@ package uk.gov.hmrc.addressgateway.connector
 import play.api.Logging
 import play.api.http.HeaderNames._
 import play.api.http.{HeaderNames, HttpEntity, MimeTypes}
-import play.api.libs.json.{JsObject, JsValue}
+import play.api.libs.json.JsObject
 import play.api.mvc.Results.{BadGateway, InternalServerError, MethodNotAllowed}
 import play.api.mvc.{AnyContent, Request, ResponseHeader, Result}
 import uk.gov.hmrc.http.client.HttpClientV2
@@ -44,7 +44,7 @@ class DownstreamConnector @Inject() (httpClient: HttpClientV2) extends Logging {
         try {
           httpClient
             .post(url"$url")
-            .withBody(request.body.asJson.getOrElse(JsObject.empty)) // TODO: Better way to do this?
+            .withBody(request.body.asJson.getOrElse(JsObject.empty))
             .setHeader(onwardHeaders: _*)
             .execute[HttpResponse]
             .map { response: HttpResponse =>
@@ -75,25 +75,4 @@ class DownstreamConnector @Inject() (httpClient: HttpClientV2) extends Logging {
     }
   }
 
-  def checkConnectivity(url: String, authToken: String, body: JsValue = JsObject.empty)(implicit ec: ExecutionContext): Future[Boolean] = {
-    import uk.gov.hmrc.http.HttpReads.Implicits.readRaw
-    implicit val hc: HeaderCarrier = HeaderCarrier(authorization = Some(Authorization(authToken)))
-
-    try {
-      httpClient
-        .post(url"$url")
-        .withBody(body)
-        .execute[HttpResponse]
-        .map {
-          case response if response.status > 400      => false
-          case response if response.status / 100 == 5 => false
-          case _                                      => true
-        }
-        .recoverWith { case t: Throwable =>
-          Future.successful(false)
-        }
-    } catch {
-      case t: Throwable => Future.successful(false)
-    }
-  }
 }

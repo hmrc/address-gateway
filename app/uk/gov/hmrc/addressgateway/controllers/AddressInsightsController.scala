@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.addressgateway.controllers
 
-import play.api.Logger
 import play.api.mvc._
 import uk.gov.hmrc.addressgateway.ToggledAuthorisedFunctions
 import uk.gov.hmrc.addressgateway.config.AppConfig
@@ -33,8 +32,6 @@ class AddressInsightsController @Inject() (cc: ControllerComponents, config: App
   implicit ec: ExecutionContext
 ) extends BackendController(cc)
     with ToggledAuthorisedFunctions {
-
-  private val logger = Logger(this.getClass.getSimpleName)
 
   def lookup(): Action[AnyContent] = Action.async { implicit request =>
     toggledAuthorised(config.rejectInternalTraffic, AuthProviders(StandardApplication)) {
@@ -54,31 +51,6 @@ class AddressInsightsController @Inject() (cc: ControllerComponents, config: App
   }
 
   private def downstreamUri(uri: String, targetServiceContext: String): String =
-    uri.toString.replace(config.appName, targetServiceContext)
+    uri.replace(config.appName, targetServiceContext)
 
-  def checkConnectivity(): Unit = {
-    val reputationUrl = s"${config.addressReputationBaseUrl}/address-reputation/reputation/sa-reg"
-    val lookupUrl = s"${config.lookupBaseUrl}/address-lookup/lookup"
-    val checkReputation = connector.checkConnectivity(
-      reputationUrl,
-      config.internalAuthToken
-    )
-    val checkLookup = connector.checkConnectivity(
-      lookupUrl,
-      config.internalAuthToken
-    )
-
-    checkReputation.flatMap(i => checkLookup.map(l => (i, l))).map {
-      case (true, true) =>
-        logger.info("Connectivity to address-insights-proxy and address-lookup established")
-      case (true, false) =>
-        logger.error("ERROR: Could not connect to address-lookup")
-      case (false, true) =>
-        logger.error("ERROR: Could not connect to address-insights-proxy")
-      case (false, false) =>
-        logger.error("ERROR: Could not connect to address-insights-proxy or address-lookup")
-    }
-  }
-
-  checkConnectivity()
 }
