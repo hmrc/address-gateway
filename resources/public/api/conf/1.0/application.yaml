@@ -7,18 +7,9 @@ info:
   version: '1.0'
   description: >
     # Overview
-
-    ### Address
-
-    This API enables your application to validate and/or get insights for an address.
     
-    For lookup, the response will provide 0 or more matching addresses.
-    
-    For reputation, given an address, the response will provide:
+    This service provides validation, verification and risk assessments of addresses for HMRC and other government department (OGD) teams.
 
-    * Assessment with an action and reasons for this action
-    * Insights including occurrences grouped by uprn, locationRef and postcode
-    * Correlation Id - so you can reference the transaction in any feedback
 servers:
   - url: https://test-api.service.hmrc.gov.uk/misc/address
     description: Sandbox

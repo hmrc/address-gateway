@@ -1,7 +1,7 @@
 {
   "api": {
     "name": "Address",
-    "description": "Validation, verification and insights into addresses - provided by CIP (Customer Insights Platform) Insights and Reputation.",
+    "description": "This service provides validation, verification and risk assessments of addresses for HMRC and other government department (OGD) teams.",
     "context": "misc/address",
     "categories": ["PRIVATE_GOVERNMENT"],
     "versions": [
