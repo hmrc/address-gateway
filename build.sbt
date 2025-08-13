@@ -17,7 +17,6 @@ lazy val microservice = Project("address-gateway", file("."))
     buildInfoPackage := "buildinfo",
     buildInfoObject := "Info"
   )
-  .settings(resolvers += Resolver.jcenterRepo)
   .settings(CodeCoverageSettings.settings: _*)
   .settings(PlayKeys.playDefaultPort := 9964)
   .settings(
