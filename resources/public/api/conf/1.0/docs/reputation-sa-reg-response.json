@@ -37,6 +37,10 @@
       },
       "required": ["addressLine1", "country"]
     },
+    "caseId": {
+      "description": "For sa-reg, this field is populated with the pegaCaseId",
+      "type": "string"
+    },
     "lookbackDays": {
       "description": "The number of days in which to look for matches",
       "type": "number"
@@ -323,6 +327,7 @@
   "required": [
     "correlationId",
     "address",
+    "caseId",
     "lookbackDays",
     "insights",
     "reputation"
