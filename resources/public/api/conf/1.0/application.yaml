@@ -126,6 +126,7 @@ paths:
                 addressLine1: "1 High Street"
                 postcode: "EC1 2FG"
                 country: "United Kingdom"
+              caseId: "12AB34784"
         required: true
       responses:
         '200':
@@ -141,6 +142,7 @@ paths:
                   addressLine1: "1 High Street"
                   postcode: "EC1 2FG"
                   country: "United Kingdom"
+                caseId: "12AB34784"
                 lookbackDays: 120
                 reputation:
                   assessment:

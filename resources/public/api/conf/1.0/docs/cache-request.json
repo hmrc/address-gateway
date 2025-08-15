@@ -52,7 +52,7 @@
     },
     "caseId": {
       "type": "string",
-      "description": "For sa-reg, this field is populated with the pageCaseId"
+      "description": "For sa-reg, this field is populated with the pegaCaseId"
     }
   }
 }

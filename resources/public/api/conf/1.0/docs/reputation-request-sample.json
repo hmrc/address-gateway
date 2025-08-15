@@ -4,5 +4,6 @@
     "postcode": "EC1 1FG",
     "country": "United Kingdom",
     "uprn": "1234567890"
-  }
+  },
+  "caseId": "some-case-id-12345"
 }
