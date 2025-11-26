@@ -20,6 +20,7 @@ import play.api.Logging
 import play.api.http.HeaderNames._
 import play.api.http.{HeaderNames, HttpEntity, MimeTypes}
 import play.api.libs.json.JsObject
+import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 import play.api.mvc.Results.{BadGateway, InternalServerError, MethodNotAllowed}
 import play.api.mvc.{AnyContent, Request, ResponseHeader, Result}
 import uk.gov.hmrc.http.client.HttpClientV2
@@ -47,11 +48,11 @@ class DownstreamConnector @Inject() (httpClient: HttpClientV2) extends Logging {
             .withBody(request.body.asJson.getOrElse(JsObject.empty))
             .setHeader(onwardHeaders: _*)
             .execute[HttpResponse]
-            .map { response: HttpResponse =>
+            .map { response =>
               val returnHeaders = response.headers
                 .filterNot { case (n, _) => n == CONTENT_TYPE || n == CONTENT_LENGTH }
                 .view
-                .mapValues(x => x.mkString)
+                .mapValues(_.mkString)
                 .toMap
 
               Result(ResponseHeader(response.status, returnHeaders), HttpEntity.Streamed(response.bodyAsSource, None, response.header(CONTENT_TYPE)))
