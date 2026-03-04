@@ -1,0 +1,432 @@
+openapi: 3.0.1
+info:
+  title: Address Search API
+  description: |-
+    This API provides endpoints for searching for postal and BFPO (British Forces Post Office) address details within the UK.
+    
+      | Version | Date       | Author         | Description                                           |
+      |---------|------------|----------------|-------------------------------------------------------|
+      | 1.0.0   | 04-03-2026 | CIR Team       | Initial draft of the address search API specification |
+
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: 1.0.0
+paths:
+  /address-lookup/lookup:
+    post:
+      tags:
+        - Address search
+      summary: Address search by postcode
+      description: Search for addresses by postcode and optional filter
+      security:
+        - oAuth2:
+            - read:address-lookup
+      parameters:
+        - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/userAgent'
+      requestBody:
+        required: true
+        description: Address search request containing the postcode and optional filter
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              $ref: '#/components/schemas/AddressLookupByPostcodeRequest'
+            examples:
+              example 1:
+                $ref: '#/components/examples/AddressLookupByPostcodeRequestExample1'
+              example 2:
+                $ref: '#/components/examples/AddressLookupByPostcodeRequestExample2'
+      responses:
+        "200":
+          description: Successful response with address search results
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/AddressLookupByPostcodeResponse'
+              examples:
+                example 1:
+                  $ref: '#/components/examples/AddressLookupByPostcodeResponseExample1'
+                example 2:
+                  $ref: '#/components/examples/AddressLookupByPostcodeResponseExample2'
+
+        "400":
+          description: Bad request
+          headers:
+            correlationId:
+              $ref: '#/components/headers/correlationId'
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                required:
+                  - response
+                type: object
+                properties:
+                  response:
+                    $ref: '#/components/schemas/failureResponse'
+                additionalProperties: false
+              examples:
+                example 1:
+                  $ref: '#/components/examples/failureResponse400Example'
+        '500':
+          description: Server error
+          headers:
+            correlationId:
+              $ref: '#/components/headers/correlationId'
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                required:
+                  - response
+                type: object
+                properties:
+                  response:
+                    $ref: '#/components/schemas/failureResponse'
+                additionalProperties: false
+              examples:
+                example 1:
+                  $ref: '#/components/examples/failureResponse500Example'
+components:
+  headers:
+    correlationId:
+      description: |
+        used for end to end traceability purposes and should be considered mandatory. In the
+        event, however, it cannot be provided, the HIP framework will generate it, to allow
+        for downstream auditing
+      schema:
+        type: string
+        pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+  parameters:
+
+    correlationId:
+      in: header
+      name: correlationId
+      description: |
+        Used for end to end traceability purposes and should be considered mandatory. In the
+        event, however, it cannot be provided, the HIP framework will generate it, to allow
+        for downstream auditing
+      required: false
+      schema:
+        type: string
+        pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+
+    userAgent:
+      in: header
+      name: User-Agent
+      description: |
+        The name of the calling service, used for monitoring and analytics purposes. Must be in the
+        format 'calling-service-name' and contain only lowercase letters and hyphens.
+      required: true
+      schema:
+        type: string
+        pattern: '^[a-z-]+$'
+        maxLength: 100
+        minLength: 10
+  schemas:
+    AddressLookupByPostcodeRequest:
+      title: AddressLookupByPostcodeRequest
+      required:
+        - postcode
+      properties:
+        postcode:
+          description: The postcode to search for addresses. Must be a valid UK postcode format.
+          type: string
+          example: ZZ9Z 9TT
+        filter:
+          description: An optional filter to narrow down the address search results, such as a building name or street name. This can help to refine the search results when there are multiple addresses associated with the same postcode.
+          type: string
+          example: [
+            The Rectory,
+            1 High Street
+          ]
+
+    AddressLookupByPostcodeResponse:
+      title: AddressLookupByPostcodeResponse
+      type: array
+      items: {
+        type: object,
+        properties: {
+          id: {
+            type: string,
+            minLength: 1,
+            maxLength: 40
+          },
+          uprn: {
+            description: Unique property reference number, up to 12 digits,
+            type: number,
+            minimum: 0
+          },
+          parentUprn: {
+            description: Unique property reference number, up to 12 digits,
+            type: number,
+            minimum: 0
+          },
+          usrn: {
+            description: Unique property reference number, up to 12 digits,
+            type: number,
+            minimum: 0
+          },
+          organisation: {
+            description: Organisation associated with this address, if any,
+            type: string,
+            minLength: 0,
+            maxLength: 60
+          },
+          address: {
+            description: Contains a UK-based address,
+            type: object,
+            properties: {
+              lines: {
+                type: array,
+                items: {
+                  type: string,
+                  minLength: 1,
+                  maxLength: 35
+                },
+                minLength: 1,
+                maxLength: 3
+              },
+              town: {
+                type: string,
+                minLength: 1,
+                maxLength: 35
+              },
+              postcode: {
+                description: the outcode, incode combination specified for the UK by Royal Mail,
+                type: string,
+                pattern: "^[A-Z]{1,2}[0-9][0-9A-Z]? [0-9][A-Z]{2}$"
+              },
+              subdivision: {
+                type: object,
+                properties: {
+                  code: {
+                    description: the ISO3166-2 subdivision - these are home nations, regions, departments, states, länder etc as appropriate,
+                    type: string,
+                    minLength: 2,
+                    maxLength: 6
+                  },
+                  name: {
+                    description: printable name of the country,
+                    type: string,
+                    minLength: 1,
+                    maxLength: 35
+                  }
+                },
+                additionalProperties: false,
+                required: [
+                  code,
+                  name
+                ]
+              },
+              country: {
+                type: object,
+                properties: {
+                  code: {
+                    description: UK Country Register 2-letter code (like ISO3166-1), e.g. 'GB' (note that 'GB' is the official code for UK although 'UK' is an official synonym and may be used instead),
+                    type: string,
+                    minLength: 2,
+                    maxLength: 2
+                  },
+                  name: {
+                    description: printable name of the country,
+                    type: string,
+                    minLength: 1,
+                    maxLength: 35
+                  }
+                },
+                additionalProperties: false,
+                required: [
+                  code,
+                  name
+                ]
+              }
+            },
+            additionalProperties: false,
+            required: [
+              lines,
+              town,
+              postcode,
+              country
+            ]
+          },
+          language: {
+            description: ISO639-1 code, e.g. 'en' for English,
+            type: string,
+            minLength: 2,
+            maxLength: 2
+          },
+          localCustodian: {
+            description: The local custodian responsible for this address,
+            type: object,
+            properties: {
+              code: {
+                description: UK Local Custodian Code,
+                type: number,
+                minimum: 0
+              },
+              name: {
+                description: Name of the UK Local Custodian,
+                type: string,
+                minLength: 1
+              }
+            },
+            required: [
+              code,
+              name
+            ]
+          },
+          location: {
+            type: array,
+            items: {
+              type: number,
+              minimum: -180,
+              maximum: 180,
+              minItems: 2,
+              maxItems: 2
+            }
+          },
+          administrativeArea: {
+            description: Local council or authority,
+            type: string
+          },
+          poBox: {
+            description: Post Office Box number,
+            type: string,
+            minimum: 0,
+            minLength: 1,
+            maxLength: 255
+          }
+        },
+        additionalProperties: false,
+        required: [
+          id,
+          uprn,
+          address,
+          language
+        ]
+      }
+
+    failureResponse:
+      required:
+        - failures
+      type: object
+      properties:
+        failures:
+          minItems: 1
+          uniqueItems: true
+          type: array
+          items:
+            required:
+              - type
+              - reason
+            type: object
+            properties:
+              type:
+                type: string
+              reason:
+                type: string
+            additionalProperties: false
+  examples:
+    AddressLookupByPostcodeRequestExample1:
+      value:
+        postcode: ZZ9Z 9TT
+
+    AddressLookupByPostcodeRequestExample2:
+      value:
+        postcode: ZZ9Z 9TT
+        filter: 1 Testing Lane
+
+    AddressLookupByPostcodeResponseExample1:
+      value:
+        - id: GB990091234558
+          uprn: 990091234558
+          parentUprn: 990091234558
+          usrn: 300000706253
+          organisation: Some Company
+          address:
+            lines:
+              - 1 Testing Lane
+            town: Royal Madeuptown
+            postcode: ZZ9Z 9TT
+            subdivision:
+              code: GB-ENG
+              name: England
+            country:
+              code: GB
+              name: United Kingdom
+          language: en
+          localCustodian:
+            code: 425
+            name: WYCOMBE
+          location:
+            - 50.9986451
+            - -1.4690977
+          administrativeArea: TEST COUNTY
+          poBox: 123
+        - id: GB990091234557
+          uprn: 990091234557
+          parentUprn: 990091234557
+          usrn: 300000706253
+          organisation: Some Other Company
+          address:
+            lines:
+              - 2 Testing Lane
+            town: Royal Madeuptown
+            postcode: ZZ9Z 9TT
+            subdivision:
+              code: GB-ENG
+              name: England
+            country:
+              code: GB
+              name: United Kingdom
+          language: en
+          localCustodian:
+            code: 425
+            name: WYCOMBE
+          location:
+            - 50.9986451
+            - -1.4690977
+          administrativeArea: TEST COUNTY
+          poBox: 123
+
+    AddressLookupByPostcodeResponseExample2:
+      value:
+        - id: GB990091234558
+          uprn: 990091234558
+          parentUprn: 990091234557
+          usrn: 300000706253
+          organisation: Some Company
+          address:
+            lines:
+              - 1 Testing Lane
+            town: Royal Madeuptown
+            postcode: ZZ9Z 9TT
+            subdivision:
+              code: GB-ENG
+              name: England
+            country:
+              code: GB
+              name: United Kingdom
+          language: en
+          localCustodian:
+            code: 425
+            name: WYCOMBE
+          location:
+            - 50.9986451
+            - -1.4690977
+          administrativeArea: TEST COUNTY
+          poBox: 123
+
+    failureResponse400Example:
+      value:
+        response:
+          failures:
+            - type: INVALID_REQUEST
+              reason: Json payload is invalid - postcode is missing or not in valid format
+
+    failureResponse500Example:
+      value:
+        response:
+          failures:
+            - type: SERVER_ERROR
+              reason: The backend service is currently experiencing issues.
