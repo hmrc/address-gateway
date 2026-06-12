@@ -57,14 +57,14 @@ class DownstreamConnector @Inject() (httpClient: HttpClientV2) extends Logging {
 
               Result(ResponseHeader(response.status, returnHeaders), HttpEntity.Streamed(response.bodyAsSource, None, response.header(CONTENT_TYPE)))
             }
-            .recoverWith { case t: Throwable =>
+            .recoverWith { case _: Throwable =>
               Future.successful(
                 BadGateway("{\"code\": \"REQUEST_DOWNSTREAM\", \"desc\": \"An issue occurred when the downstream service tried to handle the request\"}")
                   .as(MimeTypes.JSON)
               )
             }
         } catch {
-          case t: Throwable =>
+          case _: Throwable =>
             Future.successful(
               InternalServerError("{\"code\": \"REQUEST_FORWARDING\", \"desc\": \"An issue occurred when forwarding the request to the downstream service\"}")
                 .as(MimeTypes.JSON)

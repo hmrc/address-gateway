@@ -79,7 +79,7 @@ class AddressInsightsControllerSpec extends AnyWordSpec with Matchers with Guice
 
       Server.withRouterFromComponents(ServerConfig(port = Some(insightsPort))) { components =>
         import components.{defaultActionBuilder => Action}
-        { case r @ SPOST(p"/lookup") =>
+        { case _ @SPOST(p"/lookup") =>
           Action(Ok(response).withHeaders(HeaderNames.CONTENT_TYPE -> MimeTypes.JSON))
         }
       } { _ =>
@@ -121,7 +121,7 @@ class AddressInsightsControllerSpec extends AnyWordSpec with Matchers with Guice
 
       Server.withRouterFromComponents(ServerConfig(port = Some(insightsPort))) { components =>
         import components.{defaultActionBuilder => Action}
-        { case r @ SPOST(p"/insights") =>
+        { case _ @SPOST(p"/insights") =>
           Action(Ok(response).withHeaders(HeaderNames.CONTENT_TYPE -> MimeTypes.JSON))
         }
       } { _ =>
@@ -148,7 +148,7 @@ class AddressInsightsControllerSpec extends AnyWordSpec with Matchers with Guice
 
       Server.withRouterFromComponents(ServerConfig(port = Some(insightsPort))) { components =>
         import components.{defaultActionBuilder => Action}
-        { case r @ SPOST(p"/insights") =>
+        { case _ @SPOST(p"/insights") =>
           Action(
             BadRequest(errorResponse).withHeaders(
               HeaderNames.CONTENT_TYPE -> MimeTypes.JSON
@@ -171,7 +171,7 @@ class AddressInsightsControllerSpec extends AnyWordSpec with Matchers with Guice
 
       Server.withRouterFromComponents(ServerConfig(port = Some(insightsPort))) { components =>
         import components.{defaultActionBuilder => Action}
-        { case r @ SPOST(p"/insights") =>
+        { case _ @SPOST(p"/insights") =>
           Action(BadRequest(errorResponse).withHeaders(HeaderNames.CONTENT_TYPE -> MimeTypes.JSON))
         }
       } { _ =>
